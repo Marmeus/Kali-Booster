@@ -5,8 +5,8 @@ sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y
 sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra -y
 
 # Configurar el teclado
-echo Configurando el teclado...
-sudo dpkg-reconfigure keyboard-configuration
+# echo Configurando el teclado...
+# sudo dpkg-reconfigure keyboard-configuration
 
 #echo Deshabilitando ping reply
 #sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
