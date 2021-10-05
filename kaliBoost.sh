@@ -147,6 +147,7 @@ wget https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/winPEAS/winPE
 wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 -O ~/UTILS/pspy32; chmod +x ~/UTILS/pspy32
 wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 -O ~/UTILS/pspy64; chmod +x ~/UTILS/pspy64
 wget https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1 -O ~/UTILS/PowerUp.ps1
+wget https://gist.githubusercontent.com/joswr1ght/22f40787de19d80d110b37fb79ac3985/raw/50008b4501ccb7f804a61bc2e1a3d1df1cb403c4/easy-simple-php-webshell.php -O ~/UTILS/sws.php
 
 echo ######################################################################
 echo                           REINICIANDO
