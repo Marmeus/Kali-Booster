@@ -56,8 +56,13 @@ echo 'alias portsDepth="sudo nmap -sC -sV -n -T5 -oN PortsDepth.txt -p"' >> ~/.b
 echo 'alias vulns="sudo nmap --script vuln -n -T5 -oN VulnsPorts.txt -p" >> ~/.bashrc
 
 echo Descomprimiendo rockyou
+echo =======================
 cd /usr/share/wordlists/
 sudo gzip -d rockyou.txt.gz
+
+echo Añadiendo .git a directory-list-2.3-medium.tx
+echo =============================================
+sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
 
 echo Añadiendo links simbólicos
 ln -s $(pwd)/HTB ~/Documents/HTB
