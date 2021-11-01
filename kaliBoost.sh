@@ -65,6 +65,8 @@ echo =============================================
 sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
 
 echo Añadiendo links simbólicos
+mkdir HTB
+mkdir THM
 ln -s $(pwd)/HTB ~/Documents/HTB
 ln -s $(pwd)/THM ~/Documents/THM
 
