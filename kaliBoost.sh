@@ -2,7 +2,7 @@
 setxkbmap -layout es
 sudo apt-get update
 sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y
-sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra -y
+sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker -y
 
 # Configurar el teclado
 # echo Configurando el teclado...
@@ -94,11 +94,27 @@ cd /opt/impacket
 pip3 install -r /opt/impacket/requirements.txt
 cd /opt/impacket/ && sudo python3 ./setup.py install
 
-echo      VOLATILITY
+echo      VOLATILITY_2
 echo =======================
 sudo git clone https://github.com/volatilityfoundation/volatility.git /opt/volatility
 cd /opt/volatility
 sudo python setup.py install
+
+echo      VOLATILITY_3
+echo =======================
+sudo git clone https://github.com/volatilityfoundation/volatility3.git /opt/volatility3
+cd /opt/volatility3
+sudo python3 setup.py build 
+sudo python3 setup.py install
+sudo pip3 install -r requirements.txt
+
+echo        JWT_TOOL
+echo =======================
+sudo git clone https://github.com/ticarpi/jwt_tool /opt/jwt_tool
+cd /opt/jwt_tool
+sudo python3 -m pip install termcolor cprint pycryptodomex requests
+echo 'alias jwt_tool="python3 /opt/jwt_tool/jwt_tool.py"' >> ~/.bashrc
+
 
 echo        EMPIRE
 echo =======================
@@ -129,6 +145,11 @@ echo        STEGSEEK
 echo =======================
 wget https://github.com/RickdeJager/stegseek/releases/download/v0.6/stegseek_0.6-1.deb -O /tmp/stegseek.deb
 sudo dpkg -i /tmp/stegseek.deb
+
+echo      STEGO-TOOLKIT
+echo =======================
+sudo docker pull dominicbreuker/stego-toolkit
+echo 'alias stego-toolkit="sudo docker run -v $(pwd):/data -it dominicbreuker/stego-toolkit:latest /bin/bash"' >> ~/.bashrc
 
 echo        KERBRUTE
 echo =======================
