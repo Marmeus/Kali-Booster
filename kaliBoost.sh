@@ -162,6 +162,15 @@ echo        GIT-DUMPER
 echo =======================
 sudo pip install git-dumper
 
+echo         POSTMAN
+echo =======================
+sudo wget https://dl.pstmn.io/download/latest/linux64 -O /opt/postman.tar.gz
+cd /opt/
+sudo tar -xvzf postman.tar.gz
+sudo rm -rf postman.tar.gz
+echo 'alias postman="/opt/Postman/app/postman 2>/dev/null >/dev/null &"' >> ~/.bashrc
+
+
 echo ======================================================================
 echo                      DESCARGANDO ENUM SCRIPTS
 echo ======================================================================
