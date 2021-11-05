@@ -53,7 +53,7 @@ echo "alias rot13=\"tr 'A-Za-z' 'N-ZA-Mn-za-m'\"" >> ~/.bashrc
 echo 'alias allports="sudo nmap -sS -p- -n -T5 -oN AllPorts.txt"' >> ~/.bashrc
 echo 'alias allportsUDP="sudo nmap -v -sU -p- -n -T5 -oN AllPortsUDP.txt"' >> ~/.bashrc
 echo 'alias portsDepth="sudo nmap -sC -sV -n -T5 -oN PortsDepth.txt -p"' >> ~/.bashrc
-echo 'alias vulns="sudo nmap --script vuln -n -T5 -oN VulnsPorts.txt -p" >> ~/.bashrc
+echo 'alias vulns="sudo nmap --script vuln -n -T5 -oN VulnsPorts.txt -p"' >> ~/.bashrc
 
 echo Descomprimiendo rockyou
 echo =======================
