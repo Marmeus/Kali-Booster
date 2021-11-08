@@ -11,6 +11,8 @@ Default old kali linux .bashrc
 
 ```bash
 sudo pip uninstall pip
-curl  https://bootstrap.pypa.io/pip/2.7/get-pip.py | sudo python
+sudo python2.7 get-pip2.7.py
+sudo python3 get-pip3.py
 pip2 -V
+pip3 -V
 ```

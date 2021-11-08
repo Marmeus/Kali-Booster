@@ -1,8 +1,15 @@
 #!/bin/bash
 setxkbmap -layout es
 sudo apt-get update
-sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y
+sudo apt-get upgrade -y && sudo apt-get upgrade -y
 sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker -y
+
+
+sudo pip uninstall pip
+sudo python2.7 get-pip2.7.py
+sudo python3 get-pip3.py
+pip2 -V
+pip3 -V
 
 # Configurar el teclado
 # echo Configurando el teclado...
@@ -60,8 +67,8 @@ echo =======================
 cd /usr/share/wordlists/
 sudo gzip -d rockyou.txt.gz
 
-echo Añadiendo .git a directory-list-2.3-medium.tx
-echo =============================================
+echo Añadiendo .git a directory-list-2.3-medium.txt
+echo ==============================================
 sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
 
 echo Añadiendo links simbólicos
@@ -152,6 +159,11 @@ echo      STEGO-TOOLKIT
 echo =======================
 sudo docker pull dominicbreuker/stego-toolkit
 echo 'alias stego-toolkit="sudo docker run -v $(pwd):/data -it dominicbreuker/stego-toolkit:latest /bin/bash"' >> ~/.bashrc
+
+echo     JAVA DECOMPILER
+echo =======================
+sudo wget https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar -O /opt/javaDecompiler.jar
+echo 'alias javaDecompiler="java -jar /opt/javaDecompiler.jar &>/dev/null &"' >> ~/.bashrc
 
 echo        KERBRUTE
 echo =======================
