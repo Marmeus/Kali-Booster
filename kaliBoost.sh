@@ -43,6 +43,12 @@ echo ===================
 sudo chsh -s /bin/bash $(whoami)
 wget https://raw.githubusercontent.com/Marmeus/Kali-Linux-bashrc/main/bashrc -O ~/.bashrc
 
+echo Añadiendo MIBS snmp
+echo ===================
+sudo apt install snmp-mibs-downloader -y
+sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
+echo "" | sudo tee /etc/snmp/snmp.conf
+
 echo  INSTALANDO KALI TOOOLS
 ==========================================================================
 sudo apt-get install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y
