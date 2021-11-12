@@ -132,7 +132,7 @@ echo 'alias jwt_tool="python3 /opt/jwt_tool/jwt_tool.py"' >> ~/.bashrc
 
 echo   WINDOWS EXPLOIT SUGGESTER
 echo =============================
-wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py  ~/UTILS/windows-exploit-suggester.py
+wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py -O ~/UTILS/windows-exploit-suggester.py
 pip2.7 install xlrd==1.2.0
 echo 'alias windows-exploit-suggester="python2.7 ~/UTILS/windows-exploit-suggester.py"' >> ~/.bashrc
 
