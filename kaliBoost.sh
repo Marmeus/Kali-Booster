@@ -112,9 +112,20 @@ cd /opt/impacket/ && sudo python3 ./setup.py install
 
 echo      VOLATILITY_2
 echo =======================
+sudo apt-get install yara python2.7-dev -y
 sudo git clone https://github.com/volatilityfoundation/volatility.git /opt/volatility
 cd /opt/volatility
 sudo python setup.py install
+git clone https://github.com/gdabah/distorm.git 
+cd distorm3
+python2.7 setup.py build
+sudo python2.7 setup.py build install
+wget https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
+tar -xvzf pycrypto-2.6.1.tar.gz
+cd pycrypto-2.6.1
+python2.7tup.py build
+sudo python2.7tup.py build install
+
 
 echo      VOLATILITY_3
 echo =======================
@@ -123,6 +134,7 @@ cd /opt/volatility3
 sudo python3 setup.py build 
 sudo python3 setup.py install
 sudo pip3 install -r requirements.txt
+
 
 echo        JWT_TOOL
 echo =======================
