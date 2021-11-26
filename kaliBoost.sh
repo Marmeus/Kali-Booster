@@ -63,10 +63,10 @@ echo "alias htbv=\"sudo openvpn $PWD/HTB/Marmeus-vip.ovpn\"" >> ~/.bashrc
 echo "alias thm=\"sudo openvpn $PWD/THM/Marmeus.ovpn\"" >> ~/.bashrc>> ~/.bashrc
 echo 'alias bashScan="~/Scripts/bashScan"' >> ~/.bashrc
 echo "alias rot13=\"tr 'A-Za-z' 'N-ZA-Mn-za-m'\"" >> ~/.bashrc
-echo 'alias allports="sudo nmap -sS -p- -n -T5 -oN AllPorts.txt"' >> ~/.bashrc
-echo 'alias allportsUDP="sudo nmap -v -sU -p- -n -T5 -oN AllPortsUDP.txt"' >> ~/.bashrc
-echo 'alias portsDepth="sudo nmap -sC -sV -n -T5 -oN PortsDepth.txt -p"' >> ~/.bashrc
-echo 'alias vulns="sudo nmap --script vuln -n -T5 -oN VulnsPorts.txt -p"' >> ~/.bashrc
+echo 'alias allports="sudo nmap -sS -p- -n -T4 -oN AllPorts.txt"' >> ~/.bashrc
+echo 'alias allportsUDP="sudo nmap -v -sU -p- -n -T4 -oN AllPortsUDP.txt"' >> ~/.bashrc
+echo 'alias portsDepth="sudo nmap -sC -sV -n -T4 -oN PortsDepth.txt -p"' >> ~/.bashrc
+echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.bashrc
 echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
 
 echo Descomprimiendo rockyou
