@@ -70,20 +70,21 @@ echo 'alias portsDepth="sudo nmap -sC -sV -n -T4 -oN PortsDepth.txt -p"' >> ~/.b
 echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.bashrc
 echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
 
-echo Descomprimiendo rockyou
-echo =======================
-cd /usr/share/wordlists/
-sudo gzip -d rockyou.txt.gz
-
-echo Añadiendo .git a directory-list-2.3-medium.txt
-echo ==============================================
-sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
-
 echo Añadiendo links simbólicos
 mkdir HTB
 mkdir THM
 ln -s $(pwd)/HTB ~/Documents/HTB
 ln -s $(pwd)/THM ~/Documents/THM
+
+echo Descomprimiendo rockyou
+echo =======================
+cd /usr/share/wordlists/
+sudo gzip -d rockyou.txt.gz
+cd -
+
+echo Añadiendo .git a directory-list-2.3-medium.txt
+echo ==============================================
+sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
 
 echo Descargando TOP domains
 echo =======================
