@@ -3,7 +3,8 @@ setxkbmap -layout es
 sudo apt-get update
 sudo apt-get upgrade -y && sudo apt-get upgrade -y
 sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker -y
-
+# VMWare tools
+# sudo apt intall fuse open-vm-tools-desktop -y
 
 sudo pip uninstall pip
 sudo python2.7 get-pip2.7.py
