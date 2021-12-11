@@ -13,6 +13,10 @@ sudo python3 get-pip3.py
 pip2 -V
 pip3 -V
 
+# For kirbi2john.py
+pip2 install pyasn1
+
+
 # Configurar el teclado
 # echo Configurando el teclado...
 # sudo dpkg-reconfigure keyboard-configuration
