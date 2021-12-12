@@ -156,12 +156,6 @@ wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/ma
 pip2.7 install xlrd==1.2.0
 echo 'alias windows-exploit-suggester="python2.7 ~/UTILS/windows-exploit-suggester.py"' >> ~/.bashrc
 
-echo        EMPIRE
-echo =======================
-sudo git clone https://github.com/BC-SECURITY/Empire/ /opt/Empire
-cd /opt/Empire && sudo ./setup/install.sh
-echo 'alias empire="cd /opt/Empire/; sudo ./empire"' >> ~/.bashrc
-
 echo     STAR KILLER
 echo =======================
 cd /opt
