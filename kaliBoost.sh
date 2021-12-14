@@ -123,9 +123,8 @@ sudo apt-get install yara python2.7-dev -y
 sudo git clone https://github.com/volatilityfoundation/volatility.git /opt/volatility
 cd /opt/volatility
 sudo python setup.py install
-git clone https://github.com/gdabah/distorm.git 
-cd distorm3
-python2.7 setup.py build
+sudo git clone https://github.com/gdabah/distorm.git 
+cd distorm
 sudo python2.7 setup.py build install
 wget https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
 tar -xvzf pycrypto-2.6.1.tar.gz
