@@ -130,8 +130,7 @@ sudo python2.7 setup.py build install
 wget https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
 tar -xvzf pycrypto-2.6.1.tar.gz
 cd pycrypto-2.6.1
-python2.7tup.py build
-sudo python2.7tup.py build install
+sudo python2.7 setup.py build install
 
 
 echo      VOLATILITY_3
