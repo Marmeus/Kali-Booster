@@ -76,10 +76,10 @@ echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.
 echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
 
 echo Añadiendo links simbólicos
-mkdir HTB
-mkdir THM
-ln -s $(pwd)/HTB ~/Documents/HTB
-ln -s $(pwd)/THM ~/Documents/THM
+mkdir ../HTB
+mkdir ../THM
+ln -s $(pwd)/../HTB ~/Documents/HTB
+ln -s $(pwd)/../THM ~/Documents/THM
 
 echo Descomprimiendo rockyou
 echo =======================
