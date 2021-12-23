@@ -225,7 +225,8 @@ wget https://raw.githubusercontent.com/rasta-mouse/Sherlock/master/Sherlock.ps1 
 wget https://gist.githubusercontent.com/joswr1ght/22f40787de19d80d110b37fb79ac3985/raw/50008b4501ccb7f804a61bc2e1a3d1df1cb403c4/easy-simple-php-webshell.php -O ~/UTILS/sws.php
 wget https://download.sysinternals.com/files/ProcessMonitor.zip -O ~/UTILS/ProcessMonitor.zip
 wget https://download.sysinternals.com/files/AccessChk.zip -O ~/UTILS/AccessChk.zip
-
+wget https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O ~/UTILS/Invoke-Rubeus.ps1
+wget https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O ~/UTILS/Invoke-Kerberoast.ps1
 echo ######################################################################
 echo                           REINICIANDO
 echo ######################################################################
