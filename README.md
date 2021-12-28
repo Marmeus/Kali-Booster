@@ -56,6 +56,8 @@ Sometimes you are tired of executing the same long comand over and over this is 
 - GIT-DUMPER
 
 # Utilies
+Interesting files at `~/UTILS/` that might be usefull during an attack.
+
 - LinEnum
 - Linpeas
 - LinuxExploitSuggester
@@ -68,6 +70,8 @@ Sometimes you are tired of executing the same long comand over and over this is 
 - easy-simple-php-webshell.php
 - ProcessMonitor
 - AccessChk
+- Invoke-Rubeus.ps1
+- Invoke-Kerberoast.ps1
 
 # Brought back
 - Default old kali linux `.bashrc`
