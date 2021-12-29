@@ -40,6 +40,10 @@ Sometimes you are tired of executing the same long comand over and over this is 
 -  [Active Directory](https://github.com/Cryilllic/Active-Directory-Wordlists)
 -  Adds `.git` to `directory-list-2.3-medium.txt`
 
+# Hashcat Rules
+They are saved at `/opt/HashcatRules/`
+- OneRuleToRuleThemAll
+
 # Tools
 - [FFUZ](https://github.com/ffuf/ffuf/)
 - [Impacket](https://github.com/ffuf/ffuf)
@@ -47,10 +51,8 @@ Sometimes you are tired of executing the same long comand over and over this is 
 - [Volatility3](https://github.com/volatilityfoundation/volatility3) aka. `vol`
 - [JWT_TOOL](https://github.com/ticarpi/jwt_tool)
 - [WINDOWS EXPLOIT SUGGESTER](https://github.com/AonCyberLabs/Windows-Exploit-Suggester/)
-- [STAR KILLER](https://github.com/BC-SECURITY/Starkiller)
 - [KERBRUTE](https://github.com/ropnop/kerbrute/)
 - [STEGSEEK](https://github.com/RickdeJager/stegseek/)
-- POSTMAN
 - STEGO-TOOLKIT
 - EVIL-WINRM
 - GIT-DUMPER
