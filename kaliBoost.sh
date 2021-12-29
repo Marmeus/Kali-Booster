@@ -155,12 +155,6 @@ wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/ma
 pip2.7 install xlrd==1.2.0
 echo 'alias windows-exploit-suggester="python2.7 ~/UTILS/windows-exploit-suggester.py"' >> ~/.bashrc
 
-echo     STAR KILLER
-echo =======================
-cd /opt
-sudo wget https://github.com/BC-SECURITY/Starkiller/releases/download/v1.7.0/starkiller-1.7.0.AppImage
-sudo chmod +x starkiller-1.7.0.AppImage 
-echo 'alias starkiller="/opt/starkiller-1.7.0.AppImage"' >> ~/.bashrc
 
 # echo        GHIDRA
 # echo =======================
@@ -198,13 +192,6 @@ echo        GIT-DUMPER
 echo =======================
 sudo pip install git-dumper
 
-echo         POSTMAN
-echo =======================
-sudo wget https://dl.pstmn.io/download/latest/linux64 -O /opt/postman.tar.gz
-cd /opt/
-sudo tar -xvzf postman.tar.gz
-sudo rm -rf postman.tar.gz
-echo 'alias postman="/opt/Postman/app/postman 2>/dev/null >/dev/null &"' >> ~/.bashrc
 
 
 echo ======================================================================
