@@ -55,7 +55,7 @@ sudo apt install snmp-mibs-downloader -y
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
 echo "" | sudo tee /etc/snmp/snmp.conf
 
-echo  INSTALANDO KALI TOOOLS
+echo  ADDING USER ALIASES
 ==========================================================================
 sudo apt-get install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y
 echo "setxkbmap es"  >> ~/.bashrc
@@ -76,6 +76,7 @@ echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.
 echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
 
 echo Añadiendo links simbólicos
+echo ==========================
 mkdir ../HTB
 mkdir ../THM
 ln -s $(pwd)/../HTB ~/Documents/HTB
@@ -227,6 +228,13 @@ wget https://download.sysinternals.com/files/ProcessMonitor.zip -O ~/UTILS/Proce
 wget https://download.sysinternals.com/files/AccessChk.zip -O ~/UTILS/AccessChk.zip
 wget https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O ~/UTILS/Invoke-Rubeus.ps1
 wget https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O ~/UTILS/Invoke-Kerberoast.ps1
+
+echo Adding hashcat rules
+echo ====================
+sudo mkdir /opt/HashcatRules/
+sudo wget https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
+
+
 echo ######################################################################
 echo                           REINICIANDO
 echo ######################################################################
