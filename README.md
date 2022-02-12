@@ -74,6 +74,7 @@ Interesting files at `~/UTILS/` that might be usefull during an attack.
 - AccessChk
 - Invoke-Rubeus.ps1
 - Invoke-Kerberoast.ps1
+- Malicous images with PHP code
 
 # Brought back
 - Default old kali linux `.bashrc`

@@ -1,4 +1,5 @@
 #!/bin/bash
+path=$(pwd)
 setxkbmap -layout es
 sudo apt-get update
 sudo apt-get upgrade -y && sudo apt-get upgrade -y
@@ -44,12 +45,12 @@ set -g status-right "#[fg=colour255,bg=colour000] #(ip -o -4 add show dev tun0 2
 EOF
 
 
-echo MODIFICANDO .bashrc
+echo Overwritting .bashrc
 echo ===================
 sudo chsh -s /bin/bash $(whoami)
 wget https://raw.githubusercontent.com/Marmeus/Kali-Linux-bashrc/main/bashrc -O ~/.bashrc
 
-echo Añadiendo MIBS snmp
+echo Adding MIBS to snmp
 echo ===================
 sudo apt install snmp-mibs-downloader -y
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
@@ -76,29 +77,30 @@ echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.
 echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
 echo 'alias fixVBox="sudo killall -HUP VBoxClient; VBoxClient --clipboard; VBoxClient --draganddrop; VBoxClient --seamless; VBoxClient --vmsvga"' >> ~/.bashrc
 
-echo Añadiendo links simbólicos
-echo ==========================
+echo 
+
+echo Adding Simbolic Link
+echo ====================
 mkdir ../HTB
 mkdir ../THM
 ln -s $(pwd)/../HTB ~/Documents/HTB
 ln -s $(pwd)/../THM ~/Documents/THM
 
-echo Descomprimiendo rockyou
-echo =======================
+echo Unzipping rockyou
+echo =================
 cd /usr/share/wordlists/
 sudo gzip -d rockyou.txt.gz
-cd -
 
-echo Añadiendo .git a directory-list-2.3-medium.txt
+echo Adding .git to directory-list-2.3-medium.txt
 echo ==============================================
 sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
 
-echo Descargando TOP domains
+echo Downloading TOP domains
 echo =======================
 sudo git clone https://github.com/rbsec/dnscan.git /usr/share/wordlists/TopDomais
 
-echo  Descargando SecLists
-echo =======================
+echo Downloading SecLists
+echo ====================
 sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
 
 echo     Active Directory 
@@ -142,7 +144,6 @@ sudo python3 setup.py build
 sudo python3 setup.py install
 sudo pip3 install -r requirements.txt
 
-
 echo        JWT_TOOL
 echo =======================
 sudo git clone https://github.com/ticarpi/jwt_tool /opt/jwt_tool
@@ -152,18 +153,9 @@ echo 'alias jwt_tool="python3 /opt/jwt_tool/jwt_tool.py"' >> ~/.bashrc
 
 echo   WINDOWS EXPLOIT SUGGESTER
 echo =============================
-wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py -O ~/UTILS/windows-exploit-suggester.py
+sudo wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py -O /opt/windows-exploit-suggester.py
 pip2.7 install xlrd==1.2.0
-echo 'alias windows-exploit-suggester="python2.7 ~/UTILS/windows-exploit-suggester.py"' >> ~/.bashrc
-
-
-# echo        GHIDRA
-# echo =======================
-# wget https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip -O /tmp/ghidra.zip
-# cd /tmp/
-# unzip ghidra.zip
-# mv ghidra_9.2.2_PUBLIC/ ~/Documents/ghidra/
-# echo 'alias ghidra="~/Documents/ghidra/ghidraRun"' >> ~/.bashrc
+echo 'alias windows-exploit-suggester="python2.7 /opt/windows-exploit-suggester.py"' >> ~/.bashrc
 
 echo       EVIL-WINRM
 echo =======================
@@ -196,8 +188,9 @@ sudo pip install git-dumper
 
 
 echo ======================================================================
-echo                      DESCARGANDO ENUM SCRIPTS
+echo                        POPULATING ~/UTILS/
 echo ======================================================================
+cd $path
 mkdir ~/UTILS/
 wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O ~/UTILS/LinEnum.sh
 wget https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/linPEAS/linpeas.sh -O ~/UTILS/linpeas.sh
@@ -216,11 +209,14 @@ wget https://download.sysinternals.com/files/ProcessMonitor.zip -O ~/UTILS/Proce
 wget https://download.sysinternals.com/files/AccessChk.zip -O ~/UTILS/AccessChk.zip
 wget https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O ~/UTILS/Invoke-Rubeus.ps1
 wget https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O ~/UTILS/Invoke-Kerberoast.ps1
+cp -r ./MalicousImages/ ~/UTILS/
 
 echo Adding hashcat rules
 echo ====================
 sudo mkdir /opt/HashcatRules/
 sudo wget https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
+
+
 
 
 echo ######################################################################
