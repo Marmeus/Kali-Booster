@@ -5,6 +5,7 @@ Furtheremore, this script creates some usefull aliases that you might need in yo
 # Pre-Installation
 1. Because a I have a spanish keyboard it adds the spanish keyboard layout to `.bashrc`, if you have a different layout change it at line 61.
 2. The openvpn aliases executes my openvpn files change them by your HackTheBox/tryHackMe name.
+3. In order to get access to the shared folders you need to execute `sudo usermod -aG vboxsf kali`
 
 # Installation
 
