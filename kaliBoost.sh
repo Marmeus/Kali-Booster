@@ -169,7 +169,7 @@ sudo dpkg -i /tmp/stegseek.deb
 echo      STEGO-TOOLKIT
 echo =======================
 sudo docker pull dominicbreuker/stego-toolkit
-echo 'alias stego-toolkit="sudo docker run -v $(pwd):/data -it dominicbreuker/stego-toolkit:latest /bin/bash"' >> ~/.bashrc
+echo 'alias stego-toolkit="echo 'WIKI: https://github.com/DominicBreuker/stego-toolkit'; sudo docker run -v $(pwd):/data -it dominicbreuker/stego-toolkit:latest /bin/bash"' >> ~/.bashrc
 
 echo     JAVA DECOMPILER
 echo =======================
