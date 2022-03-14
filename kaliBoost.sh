@@ -50,6 +50,11 @@ echo ===================
 sudo chsh -s /bin/bash $(whoami)
 wget https://raw.githubusercontent.com/Marmeus/Kali-Linux-bashrc/main/bashrc -O ~/.bashrc
 
+echo Changing Wallpaper
+echo ==================
+cp Wallpaper.png ~/Pictures/Wallpaper
+sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+
 echo Adding MIBS to snmp
 echo ===================
 sudo apt install snmp-mibs-downloader -y
