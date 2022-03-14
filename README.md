@@ -59,6 +59,12 @@ They are saved at `/opt/HashcatRules/`
 - EVIL-WINRM
 - GIT-DUMPER
 
+# Firefox plugins
+- [Foxy-Proxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ )
+- [Wappalyzer](https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/)
+- [User-Agent editor](https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/)
+- [Cookie-Editor](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/)
+
 # Utilies
 Interesting files at `~/UTILS/` that might be usefull during an attack.
 
