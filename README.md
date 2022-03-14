@@ -17,7 +17,8 @@ cd Kali-Booster
 chmod +x kaliBoost.sh
 ./kaliBoost.sh
 ```
-
+# New Wallpaper
+Changes the default Kali-Linux wallpaper but the one stored at `./Wallpaper.png`
 # New Aliases
 Sometimes you are tired of executing the same long comand over and over this is why I created the following aliases.
 -  **mkcd**: Creates and access the directory.
