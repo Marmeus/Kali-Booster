@@ -46,9 +46,20 @@ EOF
 
 
 echo Overwritting .bashrc
-echo ===================
+echo ====================
 sudo chsh -s /bin/bash $(whoami)
-wget https://raw.githubusercontent.com/Marmeus/Kali-Linux-bashrc/main/bashrc -O ~/.bashrc
+cp bashrc -O ~/.bashrc
+
+echo Firefox plugins: foxyproxy, cookie-editor, user-agent, wappalyzer
+echo =================================================================
+echo 
+echo CLOSE FIREFOX ONCE THE THE PLUGINS HAVE BEEN INSTALED
+wget $(curl https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+wget $(curl https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+wget $(curl https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+wget $(curl https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+firefox *.xpi
+
 
 echo Changing Wallpaper
 echo ==================
