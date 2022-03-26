@@ -64,7 +64,7 @@ firefox *.xpi
 echo Changing Wallpaper
 echo ==================
 cp Wallpaper.png ~/Pictures/Wallpaper
-sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 
 echo Adding MIBS to snmp
 echo ===================
