@@ -55,9 +55,9 @@ They are saved at `/opt/HashcatRules/`
 - [WINDOWS EXPLOIT SUGGESTER](https://github.com/AonCyberLabs/Windows-Exploit-Suggester/)
 - [KERBRUTE](https://github.com/ropnop/kerbrute/)
 - [STEGSEEK](https://github.com/RickdeJager/stegseek/)
-- STEGO-TOOLKIT
-- EVIL-WINRM
-- GIT-DUMPER
+- [STEGO-TOOLKIT](https://github.com/DominicBreuker/stego-toolkit)
+- [EVIL-WINRM](https://github.com/Hackplayers/evil-winrm)
+- [GIT-DUMPER](https://github.com/arthaud/git-dumper)
 
 # Firefox plugins
 - [Foxy-Proxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ )
