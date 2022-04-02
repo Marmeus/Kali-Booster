@@ -78,7 +78,7 @@ sudo apt-get install gobuster dnsutils chisel libimage-exiftool-perl starkiller 
 echo "setxkbmap es"  >> ~/.bashrc
 echo 'mkcd (){ mkdir -p -- "$1" &&    cd -P -- "$1"; }' >> ~/.bashrc
 echo "puertos (){ puertos=\$(cat \$1 | tail -n +2 | grep open | awk -F/  '{print \$1}'  ORS=',' | sed 's/.\$//'); echo -n \$puertos | xclip -sel clip; echo \$puertos; } " >> ~/.bashrc
-echo "sttysize(){ f=\$(mktemp); echo -n stty rows \$(stty size | awk '{print \$1}') >>\$f; echo -n ' '>>\$f; echo -n columns \$(stty size | awk '{print \$2}')>>\$f; cat \$f | xclip -sel clip; cat \$f; echo; }" >> ~/.bashrc
+echo "sttysize(){ sttysize(){ temp=\$(echo \$(stty size) | awk '{split(\$0,val,\" \"); printf \"stty rows %i columns %i\n\", val[1], val[2]}'); echo \$temp; echo -n \$temp | xclip -sel clip;}" >> ~/.bashrc
 echo "alias htb=\"sudo openvpn $PWD/HTB/Marmeus.ovpn\"" >> ~/.bashrc
 echo "alias htbr=\"sudo openvpn $PWD/HTB/Marmeus-release.ovpn\"" >> ~/.bashrc
 echo "alias htbf=\"sudo openvpn $PWD/HTB/Marmeus-fortress.ovpn\"" >> ~/.bashrc
