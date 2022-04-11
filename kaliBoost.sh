@@ -3,7 +3,7 @@ path=$(pwd)
 setxkbmap -layout es
 sudo apt-get update
 sudo apt-get upgrade -y && sudo apt-get upgrade -y
-sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker rlwrap sshuttle -y
+sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle -y
 # VMWare tools
 # sudo apt intall fuse open-vm-tools-desktop -y
 # Share folders mount at boot time: echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
