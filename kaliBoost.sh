@@ -209,7 +209,7 @@ echo ======================================================================
 cd $path
 mkdir ~/UTILS/
 wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O ~/UTILS/LinEnum.sh
-wget https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/linPEAS/linpeas.sh -O ~/UTILS/linpeas.sh
+wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O ~/UTILS/linpeas.sh
 wget https://raw.githubusercontent.com/mzet-/linux-exploit-suggester/master/linux-exploit-suggester.sh -O ~/UTILS/linux-exploit-suggester.sh
 wget https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/Release/winPEASany.exe -O ~/UTILS/winPEASany.exe 
 wget https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/x64/Release/winPEASx64.exe -O ~/UTILS/winPEASx64.exe
