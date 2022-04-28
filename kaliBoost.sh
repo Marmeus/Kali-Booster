@@ -48,7 +48,7 @@ EOF
 echo Overwritting .bashrc
 echo ====================
 sudo chsh -s /bin/bash $(whoami)
-cp bashrc -O ~/.bashrc
+cp bashrc ~/.bashrc
 
 echo Firefox plugins: foxyproxy, cookie-editor, user-agent, wappalyzer
 echo =================================================================
@@ -84,7 +84,6 @@ echo "alias htbr=\"sudo openvpn $PWD/HTB/Marmeus-release.ovpn\"" >> ~/.bashrc
 echo "alias htbf=\"sudo openvpn $PWD/HTB/Marmeus-fortress.ovpn\"" >> ~/.bashrc
 echo "alias htbv=\"sudo openvpn $PWD/HTB/Marmeus-vip.ovpn\"" >> ~/.bashrc
 echo "alias thm=\"sudo openvpn $PWD/THM/Marmeus.ovpn\"" >> ~/.bashrc>> ~/.bashrc
-echo 'alias bashScan="~/Scripts/bashScan"' >> ~/.bashrc
 echo "alias rot13=\"tr 'A-Za-z' 'N-ZA-Mn-za-m'\"" >> ~/.bashrc
 echo 'alias allports="sudo nmap -v -sS -p- -n -T4 -oN AllPorts.txt"' >> ~/.bashrc
 echo 'alias allportsUDP="sudo nmap -v -sU -p- -n -oN AllPortsUDP.txt"' >> ~/.bashrc
@@ -180,7 +179,7 @@ sudo gem install evil-winrm
 echo        STEGSEEK
 echo =======================
 wget https://github.com/RickdeJager/stegseek/releases/download/v0.6/stegseek_0.6-1.deb -O /tmp/stegseek.deb
-sudo dpkg -i /tmp/stegseek.deb
+sudo apt install /tmp/stegseek.deb
 
 echo      STEGO-TOOLKIT
 echo =======================
