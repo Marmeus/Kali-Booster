@@ -72,6 +72,11 @@ sudo apt install snmp-mibs-downloader -y
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
 echo "" | sudo tee /etc/snmp/snmp.conf
 
+echo "adding Scripts to ~/Scripts"
+mkdir ~/Scripts
+cp -r Scripts/ ~/Scripts/
+
+
 echo  ADDING USER ALIASES
 ==========================================================================
 sudo apt-get install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y

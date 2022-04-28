@@ -65,6 +65,11 @@ They are saved at `/opt/HashcatRules/`
 - [User-Agent editor](https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/)
 - [Cookie-Editor](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/)
 
+# Scripts
+Some usefull scripts are downloaded to to `~/Scripts`.
+
+- **checkSMBPermissions**: Checks the permissions of each SMB disk share, because tools like smbmap can sometimes through false positives.
+
 # Utilies
 Interesting files at `~/UTILS/` that might be usefull during an attack.
 
