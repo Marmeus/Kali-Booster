@@ -43,7 +43,7 @@ Sometimes you are tired of executing the same long comand over and over this is 
 -  Adds `.git` to `directory-list-2.3-medium.txt`
 
 # Hashcat Rules
-They are saved at `/opt/HashcatRules/`
+Added hashcat rules at `/opt/HashcatRules/`
 - OneRuleToRuleThemAll
 
 # Tools
@@ -60,13 +60,13 @@ They are saved at `/opt/HashcatRules/`
 - [GIT-DUMPER](https://github.com/arthaud/git-dumper)
 
 # Firefox plugins
-- [Foxy-Proxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ )
+- [Foxy-Proxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/) & add proxies
 - [Wappalyzer](https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/)
 - [User-Agent editor](https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/)
 - [Cookie-Editor](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/)
 
 # Scripts
-Some usefull scripts are downloaded to to `~/Scripts`.
+Some usefull scripts are downloaded to `~/Scripts`.
 
 - **checkSMBPermissions**: Checks the permissions of each SMB disk share, because tools like smbmap can sometimes through false positives.
 
@@ -87,7 +87,11 @@ Interesting files at `~/UTILS/` that might be usefull during an attack.
 - AccessChk
 - Invoke-Rubeus.ps1
 - Invoke-Kerberoast.ps1
-- Malicous images with PHP code
+- Malicous images with PHP code. **Made by**: [x4v1l0k](https://twitter.com/x4v1l0k)
+
+# Changes kali behaviour
+- Doesn't lock screen or suspend the machine.
+- Configure proxychains
 
 # Brought back
 - Default old kali linux `.bashrc`

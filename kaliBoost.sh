@@ -3,7 +3,7 @@ path=$(pwd)
 setxkbmap -layout es
 sudo apt-get update
 sudo apt-get upgrade -y && sudo apt-get upgrade -y
-sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool -y
+sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 -y
 # VMWare tools
 # sudo apt intall fuse open-vm-tools-desktop -y
 # Share folders mount at boot time: echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
@@ -26,7 +26,7 @@ pip2 install pyasn1
 #sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
 #sudo sysctl -p
 
-echo MODIFICANDO .vimrc
+echo MODIFIYING .vimrc
 echo ==================
 cat << EOF > ~/.vimrc
 :set number
@@ -36,13 +36,37 @@ cat << EOF > ~/.vimrc
 EOF
 
 
-echo MODIFICANDO .tmux.conf
+echo MODIFIYING .tmux.conf
 echo ======================
 cat << EOF > ~/.tmux.conf
 set-option -g history-limit 30000
 set -g status-right-length 100
 set -g status-right "#[fg=colour255,bg=colour000] #(ip -o -4 add show dev tun0 2>/dev/null |  awk {'print \$4'} | cut -f1 -d/) #[fg=colour000,bg=colour11] #((ip -o -4 add show dev eth0 || ip -o -4 add show dev enp0s3) 2>/dev/null |  awk {'print \$4'} | cut -f1 -d/) #[fg=colour255,bg=colour1] #H  #[fg=colour0,bg=colour25] %H:%M |#[fg=colour255] %d/%m/%Y "
 EOF
+
+
+echo MODIFIYING USER POWER MANAGEMENT
+echo ================================
+cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-power-manager" version="1.0">
+  <property name="xfce4-power-manager" type="empty">
+    <property name="power-button-action" type="empty"/>
+    <property name="show-panel-label" type="empty"/>
+    <property name="show-tray-icon" type="bool" value="false"/>
+    <property name="blank-on-ac" type="int" value="0"/>
+    <property name="dpms-on-ac-sleep" type="uint" value="0"/>
+    <property name="dpms-on-ac-off" type="uint" value="0"/>
+    <property name="inactivity-on-ac" type="uint" value="14"/>
+    <property name="dpms-enabled" type="bool" value="false"/>
+  </property>
+</channel>
+EOF
+
+echo     PROXYCHAINS
+echo ==================
+echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf 
 
 
 echo Overwritting .bashrc
@@ -60,10 +84,17 @@ wget $(curl https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-swi
 wget $(curl https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
 firefox *.xpi
 
+echo Configure foxyproxy
+echo ===================
+temp=$(grep -iR 0mphhjoh ~/.mozilla/firefox 2>&1 | grep moz-extension | cut -d' ' -f 2)
+sqliteFile=${temp::-1}
+cp $path/Assets/burp.sqlite $sqliteFile
+dbOrigin=$(echo $sqliteFile | cut -d'+' -f 4 | cut -d'/' -f 1)
+sqlite3 $sqliteFile "update database set origin = 'moz-extension://$dbOrigin';"
 
 echo Changing Wallpaper
 echo ==================
-cp Wallpaper.png ~/Pictures/Wallpaper
+cp $path/Assets/Wallpaper.png ~/Pictures/Wallpaper
 sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 
 echo Adding MIBS to snmp
@@ -204,6 +235,18 @@ sudo chmod +x /usr/bin/kerbrute
 echo        GIT-DUMPER
 echo =======================
 sudo pip install git-dumper
+
+
+echo         VS CODE
+echo =======================
+cd /tmp
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+rm -f packages.microsoft.gpg
+sudo apt install apt-transport-https
+sudo apt update
+sudo apt install code -y
 
 
 
