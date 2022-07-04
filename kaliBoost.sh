@@ -154,9 +154,15 @@ echo Downloading SecLists
 echo ====================
 sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
 
+sudo git clone https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists
+
 echo     Active Directory 
 echo =======================
 sudo git clone https://github.com/Cryilllic/Active-Directory-Wordlists.git /usr/share/wordlists/Active-Directory
+
+echo   Kerberos Users List 
+echo =======================
+sudo git clone https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists
 
 echo         FFUZ
 echo =======================
@@ -229,7 +235,7 @@ echo 'alias javaDecompiler="java -jar /opt/javaDecompiler.jar &>/dev/null &"' >>
 
 echo        KERBRUTE
 echo =======================
-wget wget https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64 -O /usr/bin/kerbrute
+sudo wget https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64 -O /usr/bin/kerbrute
 sudo chmod +x /usr/bin/kerbrute
 
 echo        GIT-DUMPER
