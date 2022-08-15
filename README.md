@@ -17,11 +17,19 @@ cd Kali-Booster
 chmod +x kaliBoost.sh
 ./kaliBoost.sh
 ```
-# New Wallpaper
+# Random stuff
+
+## New Wallpaper
+
 Changes the default Kali-Linux wallpaper but the one stored at `./Wallpaper.png`. The actual wallpaper was made by [Samiel](https://www.teepublic.com/user/samiel).
+
+## Hack font
+
+Install the [Hack](https://github.com/source-foundry/Hack) font on the system.
+
 # New Aliases
-Sometimes you are tired of executing the same long comand over and over this is why I created the following aliases.
--  **mkcd**: Creates and access the directory.
+Sometimes you are tired of executing the same long command over and over this is why I created the following aliases.
+-  **mkcd**: Creates and accesses the directory.
 -  **sttysize**: Sends to your clipboard the command `stty rows X columns Y` with the correct rows and columns for your full TTY shell. 
 - **rot13**: Does rot13 to the input sent through a pipe.
 -  **htb**: Starts openvpn for hackthebox.
@@ -97,5 +105,4 @@ Interesting files at `~/UTILS/` that might be usefull during an attack.
 - Default old kali linux `.bashrc`
 - Changes the shell to bash.
 - Pip2
-
 

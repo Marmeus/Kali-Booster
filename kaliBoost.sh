@@ -171,6 +171,13 @@ cd /tmp/
 tar -xvzf ./FFUZ.tar.gz
 sudo cp ./ffuf /usr/bin/
 
+echo         HACK FONT
+echo =======================
+cd /tmp/
+wget https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip -O Hack-font.zip
+unzip Hack-font.zip
+sudo mv ttf/ /usr/share/fonts/
+
 echo        IMPACKET
 echo =======================
 sudo git clone https://github.com/SecureAuthCorp/impacket.git /opt/impacket
