@@ -73,10 +73,56 @@ Added hashcat rules at `/opt/HashcatRules/`
 - [User-Agent editor](https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/)
 - [Cookie-Editor](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/)
 
-# Scripts
-Some usefull scripts are downloaded to `~/Scripts`.
+# Custom Scripts
+Some useful scripts are downloaded to `~/Scripts`.
 
-- **checkSMBPermissions**: Checks the permissions of each SMB disk share, because tools like smbmap can sometimes through false positives.
+- **checkSMBPermissions**: Checks the permissions of each SMB disk share because tools like smbmap can sometimes through false positives.
+
+  ```bash
+  kali@kali:~/Documents/Scripts$ ./checkSMBPermissions.sh <DOMAIN\\USER> <PASSWORD> <IP>
+  Checking share: 'ADMIN$'
+  Checking share: 'C$'
+  Checking share: 'D$'
+  Checking share: 'print$'
+  Checking share: 'bills$'
+    - <USER> has read access
+    - <USER> has write access
+  ```
+
+- **massScan.sh**: Scans all the hosts in a given network, creating a folder structure which can be very handy for later steps in a pentest.
+
+```bash
+kali@kali:~/Documents/Scripts$ ./massScan.sh 192.168.1.1/24 /tmp/results
+kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
+/tmp/massScan/
+├── 0
+│   ├── AllPorts.gnmap
+│   ├── AllPorts.nmap
+│   └── AllPorts.xml
+├── 1
+│   ├── AllPorts.gnmap
+│   ├── AllPorts.nmap
+│   ├── AllPorts.xml
+[...]
+```
+
+- **massScan_depth.sh**: Based on the output of `massScan.sh`, it makes an Nmap  with default scripts to get more information about each opened port.
+
+```bash
+kali@kali:~/Documents/Scripts$ ./massScan_depth.sh /tmp/massScan/
+kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
+/tmp/massScan/
+├── 0
+│   ├── AllPorts.gnmap
+│   ├── AllPorts.nmap
+│   └── AllPorts.xml
+├── 1
+│   ├── AllPorts.gnmap
+│   ├── AllPorts.nmap
+│   ├── AllPorts.xml
+│   └── PortsDepth.xml
+[...]
+```
 
 # Utilies
 Interesting files at `~/UTILS/` that might be usefull during an attack.
