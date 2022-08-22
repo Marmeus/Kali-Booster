@@ -34,7 +34,7 @@ do
     echo -e "\n\n============================"
     echo "Scanning IP: $ip"
     echo -e "============================"
-    sudo nmap -Pn -sC -sV -n -T4 -oN $output_dir/PortsDepth.txt $ip >/dev/null
+    sudo nmap -Pn -sC -sV -n -T4 -oN $output_dir/PortsDepth.txt $ip 
 done
 
 rm -rf $TEMP_FOLDER
