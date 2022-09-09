@@ -1,6 +1,10 @@
 #!/bin/bash
 path=$(pwd)
 setxkbmap -layout es
+
+# do not ask for restarting services
+sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
+
 sudo apt-get update
 sudo apt-get upgrade -y && sudo apt-get upgrade -y
 sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 -y
@@ -293,7 +297,8 @@ sudo mkdir /opt/HashcatRules/
 sudo wget https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
 
 
-
+# Ask again for restarting services
+sudo sed -i 's/#$nrconf{restart} = '"'"'a'"'"';/$nrconf{restart} = '"'"'i'"'"';/g' /etc/needrestart/needrestart.conf
 
 echo ######################################################################
 echo                           REINICIANDO
