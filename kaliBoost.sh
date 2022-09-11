@@ -16,11 +16,12 @@ echo =================
 echo Updating package repositories...
 sudo apt-get -qq update >/dev/null
 if [[ $upgrade_system == "true" ]];then
-    echo Upgrading system...
+    echo "Upgrading system..."
     sudo apt-get -qq dist-upgrade -y
 fi
 
 if [[ $tools == "true" ]]; then
+    echo "Installing tool packages..."
     sudo apt-get -qq install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 -y >/dev/null
     sudo apt-get -qq install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y >/dev/null
 fi
@@ -347,7 +348,7 @@ fi
 echo Adding hashcat rules
 echo ====================
 sudo mkdir /opt/HashcatRules/
-sudo wget https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
+sudo wget -q https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
 
 
 # Ask again for restarting services
