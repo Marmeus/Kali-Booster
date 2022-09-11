@@ -14,25 +14,25 @@ sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/
 echo "SYSTEM PACKAGES"
 echo =================
 echo Updating package repositories...
-sudo apt-get update >/dev/null
+sudo apt-get -qq update >/dev/null
 if [[ $upgrade_system == "true" ]];then
     echo Upgrading system...
-    sudo apt-get upgrade -y && sudo apt-get upgrade -y
+    sudo apt-get -qq dist-upgrade -y
 fi
 
 if [[ $tools == "true" ]]; then
-    sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 -y >/dev/null
-    sudo apt-get install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y >/dev/null
+    sudo apt-get -qq install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 -y >/dev/null
+    sudo apt-get -qq install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y >/dev/null
 fi
 
 echo "Installing VM requirements"
 echo ============================
 if [[ $vm == "VBox" ]]; then
-    sudo apt install virtualbox-guest-utils -y 
+    sudo apt -qq install virtualbox-guest-utils -y 
     $vboxsf=$(grep vboxsf /etc/group | awk -F: '{print $3}')
     sudo usermod -aG $vboxsf $USER
 elif [[ $vm = "VMWare" ]]; then
-    sudo apt intall fuse open-vm-tools-desktop -y
+    sudo apt -qq intall fuse open-vm-tools-desktop -y
     # Share folders mount at boot time: 
     echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
 else
@@ -152,7 +152,7 @@ fi
 
 echo "Adding MIBS to snmp"
 echo =====================
-sudo apt install snmp-mibs-downloader -y
+sudo apt -qq install snmp-mibs-downloader -y
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
 echo "" | sudo tee /etc/snmp/snmp.conf
 
@@ -250,7 +250,7 @@ if [[ $tools == "true" ]]; then
     cd /opt/impacket/ && sudo python3 ./setup.py install >/dev/null
     
     echo Installing Volatility 2...
-    sudo apt-get install yara python2.7-dev -y >/dev/null
+    sudo apt-get -qq install yara python2.7-dev -y
     sudo git clone https://github.com/volatilityfoundation/volatility.git /opt/volatility >/dev/null
     cd /opt/volatility
     sudo python setup.py install >/dev/null
@@ -288,7 +288,7 @@ if [[ $tools == "true" ]]; then
     
     echo Installing STEGSEEK...
     wget -q https://github.com/RickdeJager/stegseek/releases/download/v0.6/stegseek_0.6-1.deb -O /tmp/stegseek.deb
-    sudo apt install /tmp/stegseek.deb 
+    sudo apt -qq install /tmp/stegseek.deb 
     
     echo Installing STEGO-TOOLKIT...
     sudo docker pull dominicbreuker/stego-toolkit >/dev/null
@@ -312,9 +312,9 @@ if [[ $tools == "true" ]]; then
     sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
     sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
     rm -f packages.microsoft.gpg
-    sudo apt install apt-transport-https >/dev/null
-    sudo apt update >/dev/null
-    sudo apt install code -y 
+    sudo apt -qq install apt-transport-https
+    sudo apt -qq update
+    sudo apt -qq install code -y 
 fi
 
 echo "UTILITIES"
