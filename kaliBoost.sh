@@ -31,7 +31,7 @@ if [[ $vm == "VBox" ]]; then
     sudo apt -qq install virtualbox-guest-utils -y 
     $vboxsf=$(grep vboxsf /etc/group | awk -F: '{print $3}')
     sudo usermod -aG $vboxsf $USER
-elif [[ $vm = "VMWare" ]]; then
+elif [[ $vm == "VMWare" ]]; then
     sudo apt -qq intall fuse open-vm-tools-desktop -y
     # Share folders mount at boot time: 
     echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
@@ -54,7 +54,7 @@ if [[ $install_pip2 == "true" ]]; then
 fi
 
 # For kirbi2john.py
-pip2 install pyasn1
+pip2 install -q pyasn1
 
 
 # Configurar el teclado
@@ -213,16 +213,16 @@ if [[ $wordlists == "true" ]]; then
     sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
     
     echo Downloading TOP domains
-    sudo git clone https://github.com/rbsec/dnscan.git /usr/share/wordlists/TopDomais >/dev/null
+    sudo git clone -q https://github.com/rbsec/dnscan.git /usr/share/wordlists/TopDomais
     
     echo Downloading SecLists
-    sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists >/dev/null
+    sudo git clone -q https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
     
     echo Active Directory 
-    sudo git clone https://github.com/Cryilllic/Active-Directory-Wordlists.git /usr/share/wordlists/Active-Directory >/dev/null
+    sudo git clone -q https://github.com/Cryilllic/Active-Directory-Wordlists.git /usr/share/wordlists/Active-Directory
     
     echo Kerberos Users List 
-    sudo git clone https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists >/dev/null
+    sudo git clone -q https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists
 fi
 
 echo "HACK FONT"
@@ -244,18 +244,18 @@ if [[ $tools == "true" ]]; then
     sudo cp ./ffuf /usr/bin/
     
     echo Installing Impacket...
-    sudo git clone https://github.com/SecureAuthCorp/impacket.git /opt/impacket >/dev/null
+    sudo git clone -q https://github.com/SecureAuthCorp/impacket.git /opt/impacket
     cd /opt/impacket
-    pip3 install -r /opt/impacket/requirements.txt >/dev/null
+    pip3 install -q -r /opt/impacket/requirements.txt >/dev/null
     cd /opt/impacket/ && sudo python3 ./setup.py install >/dev/null
     
     echo Installing Volatility 2...
     sudo apt-get -qq install yara python2.7-dev -y
-    sudo git clone https://github.com/volatilityfoundation/volatility.git /opt/volatility >/dev/null
+    sudo git clone -q https://github.com/volatilityfoundation/volatility.git /opt/volatility
     cd /opt/volatility
     sudo python setup.py install >/dev/null
     echo Volatility 2: distorm plugin...
-    sudo git clone https://github.com/gdabah/distorm.git >/dev/null
+    sudo git clone -q https://github.com/gdabah/distorm.git
     cd distorm
     sudo python2.7 setup.py build install >/dev/null
     echo Volatility 2: pycrypto  plugin...
@@ -266,21 +266,21 @@ if [[ $tools == "true" ]]; then
     
     
     echo Installing Volatility 3
-    sudo git clone https://github.com/volatilityfoundation/volatility3.git /opt/volatility3 >/dev/null
+    sudo git clone-q  https://github.com/volatilityfoundation/volatility3.git /opt/volatility3
     cd /opt/volatility3
     sudo python3 setup.py build >/dev/null
     sudo python3 setup.py install >/dev/null
-    sudo pip3 install -r requirements.txt >/dev/null
+    sudo pip3 install -q -r requirements.txt >/dev/null
     
     echo Installing JWT_TOOL...
-    sudo git clone https://github.com/ticarpi/jwt_tool /opt/jwt_tool >/dev/null
+    sudo git clone -q https://github.com/ticarpi/jwt_tool /opt/jwt_tool
     cd /opt/jwt_tool
-    sudo python3 -m pip install termcolor cprint pycryptodomex requests >/dev/null
+    sudo python3 -m pip install -q termcolor cprint pycryptodomex requests >/dev/null
     echo 'alias jwt_tool="python3 /opt/jwt_tool/jwt_tool.py"' >> ~/.bashrc
     
     echo Installing Windows Exploit Suggester...
     sudo wget -q https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py -O /opt/windows-exploit-suggester.py
-    pip2.7 install xlrd==1.2.0
+    pip2.7 install -q xlrd==1.2.0
     echo 'alias windows-exploit-suggester="python2.7 /opt/windows-exploit-suggester.py"' >> ~/.bashrc
     
     echo Installing EVIL-WINRM...
@@ -303,7 +303,7 @@ if [[ $tools == "true" ]]; then
     sudo chmod +x /usr/bin/kerbrute
     
     echo Installing GIT-DUMPER...
-    sudo pip install git-dumper >/dev/null
+    sudo pip install -q git-dumper >/dev/null
     
     
     echo Installing VS CODE...
