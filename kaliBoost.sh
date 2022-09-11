@@ -1,22 +1,57 @@
 #!/bin/bash
+source ./config.cfg
 path=$(pwd)
-setxkbmap -layout es
+
+echo "CHANGING LAYOUT"
+echo ================
+setxkbmap -layout $keyboard_layout
+echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
 
 # do not ask for restarting services
 sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
 
-sudo apt-get update
-sudo apt-get upgrade -y && sudo apt-get upgrade -y
-sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 -y
-# VMWare tools
-# sudo apt intall fuse open-vm-tools-desktop -y
-# Share folders mount at boot time: echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
 
-sudo pip uninstall pip
-sudo python2.7 get-pip2.7.py
-sudo python3 get-pip3.py
-pip2 -V
-pip3 -V
+echo "SYSTEM PACKAGES"
+echo =================
+echo Updating package repositories...
+sudo apt-get update >/dev/null
+if [[ $upgrade_system == "true" ]];then
+    echo Upgrading system...
+    sudo apt-get upgrade -y && sudo apt-get upgrade -y
+fi
+
+if [[ $tools == "true" ]]; then
+    sudo apt-get install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 -y >/dev/null
+    sudo apt-get install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y >/dev/null
+fi
+
+echo "Installing VM requirements"
+echo ============================
+if [[ $vm == "VBox" ]]; then
+    sudo apt install virtualbox-guest-utils -y 
+    $vboxsf=$(grep vboxsf /etc/group | awk -F: '{print $3}')
+    sudo usermod -aG $vboxsf $USER
+elif [[ $vm = "VMWare" ]]; then
+    sudo apt intall fuse open-vm-tools-desktop -y
+    # Share folders mount at boot time: 
+    echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
+else
+    echo
+fi
+
+echo "INSTALLING PIP"
+echo  ==============
+if [[ $install_pip2 == "true" ]]; then
+    echo Uninstalling pip3...
+    sudo pip uninstall pip >/dev/null
+    echo Installing pip2.7....
+    sudo python2.7 get-pip2.7.py >/dev/null
+    echo installing pip3...
+    sudo python3 get-pip3.py >/dev/null
+    echo Check correct installation
+    pip2 -V
+    pip3 -V
+fi
 
 # For kirbi2john.py
 pip2 install pyasn1
@@ -26,30 +61,39 @@ pip2 install pyasn1
 # echo Configurando el teclado...
 # sudo dpkg-reconfigure keyboard-configuration
 
-#echo Deshabilitando ping reply
-#sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
-#sudo sysctl -p
+echo "PING REPLY"
+echo ============
+if [[ $disable_ping_reply == "true" ]]; then
+    echo Ping reply disabled
+    sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
+    sudo sysctl -p
+fi 
 
-echo MODIFIYING .vimrc
-echo ==================
+echo ".VIMRC"
+echo ========
+if [[ $add_vim_conf == "true" ]]; then
+echo Changing .vimrc
 cat << EOF > ~/.vimrc
 :set number
 :set tabstop=4 shiftwidth=4 expandtab 
 :set noai nocin nosi inde= 
 :syntax on
 EOF
+fi
 
-
-echo MODIFIYING .tmux.conf
-echo ======================
+echo ".tmux.conf"
+echo ============
+if [[ $add_tmux_conf == "true" ]]; then
+echo changing .tmux.conf
 cat << EOF > ~/.tmux.conf
 set-option -g history-limit 30000
 set -g status-right-length 100
 set -g status-right "#[fg=colour255,bg=colour000] #(ip -o -4 add show dev tun0 2>/dev/null |  awk {'print \$4'} | cut -f1 -d/) #[fg=colour000,bg=colour11] #((ip -o -4 add show dev eth0 || ip -o -4 add show dev enp0s3) 2>/dev/null |  awk {'print \$4'} | cut -f1 -d/) #[fg=colour255,bg=colour1] #H  #[fg=colour0,bg=colour25] %H:%M |#[fg=colour255] %d/%m/%Y "
 EOF
+fi
 
 
-echo MODIFIYING USER POWER MANAGEMENT
+echo "Changing user power management"
 echo ================================
 cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -68,228 +112,237 @@ cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
 </channel>
 EOF
 
-echo     PROXYCHAINS
-echo ==================
+echo "Adding proxychains"
 echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf 
 
 
 echo Overwritting .bashrc
 echo ====================
-sudo chsh -s /bin/bash $(whoami)
-cp bashrc ~/.bashrc
+if [[ $terminal=="bash" ]]; then
+    sudo chsh -s /bin/bash $(whoami)
+    cp bashrc ~/.bashrc
+fi
 
-echo Firefox plugins: foxyproxy, cookie-editor, user-agent, wappalyzer
-echo =================================================================
-echo 
-echo CLOSE FIREFOX ONCE THE THE PLUGINS HAVE BEEN INSTALED
-wget $(curl https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
-wget $(curl https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
-wget $(curl https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
-wget $(curl https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
-firefox *.xpi
+echo "FIREFOX PLUGINS"
+echo =================
+if [[ $firefox_plugins == "true" ]]; then
+    echo Installing Firefox plugins: foxyproxy, cookie-editor, user-agent, wappalyzer
+    echo NOTE: CLOSE FIREFOX ONCE THE THE PLUGINS HAVE BEEN INSTALED
+    wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+    wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+    wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+    wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+    firefox *.xpi
+    
+    echo Configuring foxyproxy
+    temp=$(grep -iR 0mphhjoh ~/.mozilla/firefox 2>&1 | grep moz-extension | cut -d' ' -f 2)
+    sqliteFile=${temp::-1}
+    cp $path/Assets/burp.sqlite $sqliteFile
+    dbOrigin=$(echo $sqliteFile | cut -d'+' -f 4 | cut -d'/' -f 1)
+    sqlite3 $sqliteFile "update database set origin = 'moz-extension://$dbOrigin';"
+fi
 
-echo Configure foxyproxy
-echo ===================
-temp=$(grep -iR 0mphhjoh ~/.mozilla/firefox 2>&1 | grep moz-extension | cut -d' ' -f 2)
-sqliteFile=${temp::-1}
-cp $path/Assets/burp.sqlite $sqliteFile
-dbOrigin=$(echo $sqliteFile | cut -d'+' -f 4 | cut -d'/' -f 1)
-sqlite3 $sqliteFile "update database set origin = 'moz-extension://$dbOrigin';"
+echo "WALLPAPER"
+echo ===========
+if [[ ! $wallpaper ]]; then
+    echo Changing Wallpaper...
+    cp $wallpaper ~/Pictures/Wallpaper.png
+    sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+fi
 
-echo Changing Wallpaper
-echo ==================
-cp $path/Assets/Wallpaper.png ~/Pictures/Wallpaper
-sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
-
-echo Adding MIBS to snmp
-echo ===================
+echo "Adding MIBS to snmp"
+echo =====================
 sudo apt install snmp-mibs-downloader -y
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
 echo "" | sudo tee /etc/snmp/snmp.conf
 
-echo "adding Scripts to ~/Scripts"
+
+echo "SCRIPTS"
+echo =========
+echo "Adding Scripts to ~/Scripts"
 mkdir ~/Scripts
 cp -r Scripts/ ~/Scripts/
 
 
-echo  ADDING USER ALIASES
-==========================================================================
-sudo apt-get install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y
-echo "setxkbmap es"  >> ~/.bashrc
-echo 'mkcd (){ mkdir -p -- "$1" &&    cd -P -- "$1"; }' >> ~/.bashrc
-echo "puertos (){ puertos=\$(cat \$1 | tail -n +2 | grep open | awk -F/  '{print \$1}'  ORS=',' | sed 's/.\$//'); echo -n \$puertos | xclip -sel clip; echo \$puertos; } " >> ~/.bashrc
-echo "sttysize(){ temp=\$(echo \$(stty size) | awk '{split(\$0,val,\" \"); printf \"stty rows %i columns %i\n\", val[1], val[2]}'); echo \$temp; echo -n \$temp | xclip -sel clip;}" >> ~/.bashrc
-echo "alias htb=\"sudo openvpn $PWD/HTB/Marmeus.ovpn\"" >> ~/.bashrc
-echo "alias htbr=\"sudo openvpn $PWD/HTB/Marmeus-release.ovpn\"" >> ~/.bashrc
-echo "alias htbf=\"sudo openvpn $PWD/HTB/Marmeus-fortress.ovpn\"" >> ~/.bashrc
-echo "alias htbv=\"sudo openvpn $PWD/HTB/Marmeus-vip.ovpn\"" >> ~/.bashrc
-echo "alias thm=\"sudo openvpn $PWD/THM/Marmeus.ovpn\"" >> ~/.bashrc>> ~/.bashrc
-echo "alias rot13=\"tr 'A-Za-z' 'N-ZA-Mn-za-m'\"" >> ~/.bashrc
-echo 'alias allports="sudo nmap -v -sS -p- -n -T4 -oN AllPorts.txt"' >> ~/.bashrc
-echo 'alias allportsUDP="sudo nmap -v -sU -p- -n -oN AllPortsUDP.txt"' >> ~/.bashrc
-echo 'alias portsDepth="sudo nmap -sC -sV -n -T4 -oN PortsDepth.txt -p"' >> ~/.bashrc
-echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.bashrc
-echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
-echo 'alias fixVBox="sudo killall -HUP VBoxClient; VBoxClient --clipboard; VBoxClient --draganddrop; VBoxClient --seamless; VBoxClient --vmsvga"' >> ~/.bashrc
-
+echo "ALIASES"
+echo =========
+if [[ $aliases == "true" ]]; then
+    echo  Adding aliases...
+    echo 'mkcd (){ mkdir -p -- "$1" &&    cd -P -- "$1"; }' >> ~/.bashrc
+    echo "puertos (){ puertos=\$(cat \$1 | tail -n +2 | grep open | awk -F/  '{print \$1}'  ORS=',' | sed 's/.\$//'); echo -n \$puertos | xclip -sel clip; echo \$puertos; } " >> ~/.bashrc
+    echo "sttysize(){ temp=\$(echo \$(stty size) | awk '{split(\$0,val,\" \"); printf \"stty rows %i columns %i\n\", val[1], val[2]}'); echo \$temp; echo -n \$temp | xclip -sel clip;}" >> ~/.bashrc
+    echo "alias rot13=\"tr 'A-Za-z' 'N-ZA-Mn-za-m'\"" >> ~/.bashrc
+    echo 'alias allports="sudo nmap -v -sS -p- -n -T4 -oN AllPorts.txt"' >> ~/.bashrc
+    echo 'alias allportsUDP="sudo nmap -v -sU -p- -n -oN AllPortsUDP.txt"' >> ~/.bashrc
+    echo 'alias portsDepth="sudo nmap -sC -sV -n -T4 -oN PortsDepth.txt -p"' >> ~/.bashrc
+    echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.bashrc
+    echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
+    echo 'alias fixVBox="sudo killall -HUP VBoxClient; VBoxClient --clipboard; VBoxClient --draganddrop; VBoxClient --seamless; VBoxClient --vmsvga"' >> ~/.bashrc
+fi
 echo 
 
-echo Adding Simbolic Link
-echo ====================
-mkdir ../HTB
-mkdir ../THM
-ln -s $(pwd)/../HTB ~/Documents/HTB
-ln -s $(pwd)/../THM ~/Documents/THM
+echo "THM"
+echo =====
+if [[ ! $thm_vpn_path == "" ]]; then
+    echo Setting VPN...
+    mkdir ~/Documents/THM
+    ln -s $(dirname $thm_vpn_path) ~/Documents/THM
+    echo "alias thm=\"sudo openvpn $thm_vpn_path\"" >> ~/.bashrc
+    
+fi
 
-echo Unzipping rockyou
-echo =================
+echo "HTB"
+echo =====
+if [[ ! $htb_vpn_path == "" ]]; then
+    echo Setting VPN...
+    mkdir ~/Documents/HTB
+    ln -s $(dirname $htb_vpn_path) ~/Documents/HTB
+    echo "alias htb=\"sudo openvpn $htb_vpn_path\"" >> ~/.bashrc
+fi
+
+
+echo "WORDLISTS"
+echo ===========
+echo Unzipping rockyou...
 cd /usr/share/wordlists/
 sudo gzip -d rockyou.txt.gz
 
-echo Adding .git to directory-list-2.3-medium.txt
-echo ==============================================
-sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
 
-echo Downloading TOP domains
-echo =======================
-sudo git clone https://github.com/rbsec/dnscan.git /usr/share/wordlists/TopDomais
+if [[ $wordlists == "true" ]]; then
+    echo Adding .git to directory-list-2.3-medium.txt
+    sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
+    
+    echo Downloading TOP domains
+    sudo git clone https://github.com/rbsec/dnscan.git /usr/share/wordlists/TopDomais >/dev/null
+    
+    echo Downloading SecLists
+    sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists >/dev/null
+    
+    echo Active Directory 
+    sudo git clone https://github.com/Cryilllic/Active-Directory-Wordlists.git /usr/share/wordlists/Active-Directory >/dev/null
+    
+    echo Kerberos Users List 
+    sudo git clone https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists >/dev/null
+fi
 
-echo Downloading SecLists
-echo ====================
-sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
-
-sudo git clone https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists
-
-echo     Active Directory 
-echo =======================
-sudo git clone https://github.com/Cryilllic/Active-Directory-Wordlists.git /usr/share/wordlists/Active-Directory
-
-echo   Kerberos Users List 
-echo =======================
-sudo git clone https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists
-
-echo         FFUZ
-echo =======================
-wget https://github.com/ffuf/ffuf/releases/download/v1.3.1/ffuf_1.3.1_linux_amd64.tar.gz -O /tmp/FFUZ.tar.gz
+echo "HACK FONT"
+echo ===========
+echo Installing Hack font...
 cd /tmp/
-tar -xvzf ./FFUZ.tar.gz
-sudo cp ./ffuf /usr/bin/
-
-echo         HACK FONT
-echo =======================
-cd /tmp/
-wget https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip -O Hack-font.zip
-unzip Hack-font.zip
+wget -q https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip -O Hack-font.zip
+unzip Hack-font.zip >/dev/null
 sudo mv ttf/ /usr/share/fonts/
 
-echo        IMPACKET
-echo =======================
-sudo git clone https://github.com/SecureAuthCorp/impacket.git /opt/impacket
-cd /opt/impacket
-pip3 install -r /opt/impacket/requirements.txt
-cd /opt/impacket/ && sudo python3 ./setup.py install
+echo "TOOLS"
+echo =======
 
-echo      VOLATILITY_2
-echo =======================
-sudo apt-get install yara python2.7-dev -y
-sudo git clone https://github.com/volatilityfoundation/volatility.git /opt/volatility
-cd /opt/volatility
-sudo python setup.py install
-sudo git clone https://github.com/gdabah/distorm.git 
-cd distorm
-sudo python2.7 setup.py build install
-wget https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
-tar -xvzf pycrypto-2.6.1.tar.gz
-cd pycrypto-2.6.1
-sudo python2.7 setup.py build install
+if [[ $tools == "true" ]]; then
+    echo Installing FFUZ...
+    wget -q https://github.com/ffuf/ffuf/releases/download/v1.3.1/ffuf_1.3.1_linux_amd64.tar.gz -O /tmp/FFUZ.tar.gz
+    cd /tmp/
+    tar -xvzf ./FFUZ.tar.gz >/dev/null
+    sudo cp ./ffuf /usr/bin/
+    
+    echo Installing Impacket...
+    sudo git clone https://github.com/SecureAuthCorp/impacket.git /opt/impacket >/dev/null
+    cd /opt/impacket
+    pip3 install -r /opt/impacket/requirements.txt >/dev/null
+    cd /opt/impacket/ && sudo python3 ./setup.py install >/dev/null
+    
+    echo Installing Volatility 2...
+    sudo apt-get install yara python2.7-dev -y >/dev/null
+    sudo git clone https://github.com/volatilityfoundation/volatility.git /opt/volatility >/dev/null
+    cd /opt/volatility
+    sudo python setup.py install >/dev/null
+    echo Volatility 2: distorm plugin...
+    sudo git clone https://github.com/gdabah/distorm.git >/dev/null
+    cd distorm
+    sudo python2.7 setup.py build install >/dev/null
+    echo Volatility 2: pycrypto  plugin...
+    wget -q https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
+    tar -xvzf pycrypto-2.6.1.tar.gz >/dev/null
+    cd pycrypto-2.6.1
+    sudo python2.7 setup.py build install >/dev/null
+    
+    
+    echo Installing Volatility 3
+    sudo git clone https://github.com/volatilityfoundation/volatility3.git /opt/volatility3 >/dev/null
+    cd /opt/volatility3
+    sudo python3 setup.py build >/dev/null
+    sudo python3 setup.py install >/dev/null
+    sudo pip3 install -r requirements.txt >/dev/null
+    
+    echo Installing JWT_TOOL...
+    sudo git clone https://github.com/ticarpi/jwt_tool /opt/jwt_tool >/dev/null
+    cd /opt/jwt_tool
+    sudo python3 -m pip install termcolor cprint pycryptodomex requests >/dev/null
+    echo 'alias jwt_tool="python3 /opt/jwt_tool/jwt_tool.py"' >> ~/.bashrc
+    
+    echo Installing Windows Exploit Suggester...
+    sudo wget -q https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py -O /opt/windows-exploit-suggester.py
+    pip2.7 install xlrd==1.2.0
+    echo 'alias windows-exploit-suggester="python2.7 /opt/windows-exploit-suggester.py"' >> ~/.bashrc
+    
+    echo Installing EVIL-WINRM...
+    sudo gem install evil-winrm >/dev/null
+    
+    echo Installing STEGSEEK...
+    wget -q https://github.com/RickdeJager/stegseek/releases/download/v0.6/stegseek_0.6-1.deb -O /tmp/stegseek.deb
+    sudo apt install /tmp/stegseek.deb 
+    
+    echo Installing STEGO-TOOLKIT...
+    sudo docker pull dominicbreuker/stego-toolkit >/dev/null
+    echo 'alias stego-toolkit="echo 'WIKI: https://github.com/DominicBreuker/stego-toolkit'; sudo docker run -v $(pwd):/data -it dominicbreuker/stego-toolkit:latest /bin/bash"' >> ~/.bashrc
+    
+    echo Installing Java decompiler >/dev/null
+    sudo wget -q https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar -O /opt/javaDecompiler.jar
+    echo 'alias javaDecompiler="java -jar /opt/javaDecompiler.jar &>/dev/null &"' >> ~/.bashrc
+    
+    echo Installing KERBRUTE...
+    sudo wget -q https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64 -O /usr/bin/kerbrute
+    sudo chmod +x /usr/bin/kerbrute
+    
+    echo Installing GIT-DUMPER...
+    sudo pip install git-dumper >/dev/null
+    
+    
+    echo Installing VS CODE...
+    cd /tmp
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+    sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+    rm -f packages.microsoft.gpg
+    sudo apt install apt-transport-https >/dev/null
+    sudo apt update >/dev/null
+    sudo apt install code -y 
+fi
 
-
-echo      VOLATILITY_3
-echo =======================
-sudo git clone https://github.com/volatilityfoundation/volatility3.git /opt/volatility3
-cd /opt/volatility3
-sudo python3 setup.py build 
-sudo python3 setup.py install
-sudo pip3 install -r requirements.txt
-
-echo        JWT_TOOL
-echo =======================
-sudo git clone https://github.com/ticarpi/jwt_tool /opt/jwt_tool
-cd /opt/jwt_tool
-sudo python3 -m pip install termcolor cprint pycryptodomex requests
-echo 'alias jwt_tool="python3 /opt/jwt_tool/jwt_tool.py"' >> ~/.bashrc
-
-echo   WINDOWS EXPLOIT SUGGESTER
-echo =============================
-sudo wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py -O /opt/windows-exploit-suggester.py
-pip2.7 install xlrd==1.2.0
-echo 'alias windows-exploit-suggester="python2.7 /opt/windows-exploit-suggester.py"' >> ~/.bashrc
-
-echo       EVIL-WINRM
-echo =======================
-sudo gem install evil-winrm
-
-echo        STEGSEEK
-echo =======================
-wget https://github.com/RickdeJager/stegseek/releases/download/v0.6/stegseek_0.6-1.deb -O /tmp/stegseek.deb
-sudo apt install /tmp/stegseek.deb
-
-echo      STEGO-TOOLKIT
-echo =======================
-sudo docker pull dominicbreuker/stego-toolkit
-echo 'alias stego-toolkit="echo 'WIKI: https://github.com/DominicBreuker/stego-toolkit'; sudo docker run -v $(pwd):/data -it dominicbreuker/stego-toolkit:latest /bin/bash"' >> ~/.bashrc
-
-echo     JAVA DECOMPILER
-echo =======================
-sudo wget https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar -O /opt/javaDecompiler.jar
-echo 'alias javaDecompiler="java -jar /opt/javaDecompiler.jar &>/dev/null &"' >> ~/.bashrc
-
-echo        KERBRUTE
-echo =======================
-sudo wget https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64 -O /usr/bin/kerbrute
-sudo chmod +x /usr/bin/kerbrute
-
-echo        GIT-DUMPER
-echo =======================
-sudo pip install git-dumper
-
-
-echo         VS CODE
-echo =======================
-cd /tmp
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-rm -f packages.microsoft.gpg
-sudo apt install apt-transport-https
-sudo apt update
-sudo apt install code -y
-
-
-
-echo ======================================================================
-echo                        POPULATING ~/UTILS/
-echo ======================================================================
-cd $path
-mkdir ~/UTILS/
-wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O ~/UTILS/LinEnum.sh
-wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O ~/UTILS/linpeas.sh
-wget https://raw.githubusercontent.com/mzet-/linux-exploit-suggester/master/linux-exploit-suggester.sh -O ~/UTILS/linux-exploit-suggester.sh
-wget https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/Release/winPEASany.exe -O ~/UTILS/winPEASany.exe 
-wget https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/x64/Release/winPEASx64.exe -O ~/UTILS/winPEASx64.exe
-wget https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/x86/Release/winPEASx86.exe -O ~/UTILS/winPEASx86.exe
-wget https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/winPEAS/winPEASbat/winPEAS.bat -O ~/UTILS/winPEAS.bat
-wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 -O ~/UTILS/pspy32; chmod +x ~/UTILS/pspy32
-wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 -O ~/UTILS/pspy64; chmod +x ~/UTILS/pspy64
-wget https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1 -O ~/UTILS/PowerUp.ps1
-wget https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1 -O ~/UTILS/PowerView.ps1
-wget https://raw.githubusercontent.com/rasta-mouse/Sherlock/master/Sherlock.ps1 -O ~/UTILS/Sherlock.ps1
-wget https://gist.githubusercontent.com/joswr1ght/22f40787de19d80d110b37fb79ac3985/raw/50008b4501ccb7f804a61bc2e1a3d1df1cb403c4/easy-simple-php-webshell.php -O ~/UTILS/sws.php
-wget https://download.sysinternals.com/files/ProcessMonitor.zip -O ~/UTILS/ProcessMonitor.zip
-wget https://download.sysinternals.com/files/AccessChk.zip -O ~/UTILS/AccessChk.zip
-wget https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O ~/UTILS/Invoke-Rubeus.ps1
-wget https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O ~/UTILS/Invoke-Kerberoast.ps1
-cp -r ./MalicousImages/ ~/UTILS/
+echo "UTILITIES"
+echo ===========
+if [[ ! $utilities_path == "" ]]; then
+    cd $path
+    echo Populating utilities at $utilities_path
+    mkdir $utilities_path
+    cp -r ./MaliciousImages/ $utilities_path
+    cd $utilities_path
+    wget -q https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O LinEnum.sh
+    wget -q https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O linpeas.sh
+    wget -q https://raw.githubusercontent.com/mzet-/linux-exploit-suggester/master/linux-exploit-suggester.sh -O linux-exploit-suggester.sh
+    wget -q https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/Release/winPEASany.exe -O winPEASany.exe 
+    wget -q https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/x64/Release/winPEASx64.exe -O winPEASx64.exe
+    wget -q https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/x86/Release/winPEASx86.exe -O winPEASx86.exe
+    wget -q https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/winPEAS/winPEASbat/winPEAS.bat -O winPEAS.bat
+    wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 -O ~/UTILS/pspy32; chmod +x pspy32
+    wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 -O ~/UTILS/pspy64; chmod +x pspy64
+    wget -q https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1 -O PowerUp.ps1
+    wget -q https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1 -O PowerView.ps1
+    wget -q https://raw.githubusercontent.com/rasta-mouse/Sherlock/master/Sherlock.ps1 -O Sherlock.ps1
+    wget -q https://gist.githubusercontent.com/joswr1ght/22f40787de19d80d110b37fb79ac3985/raw/50008b4501ccb7f804a61bc2e1a3d1df1cb403c4/easy-simple-php-webshell.php -O sws.php
+    wget -q https://download.sysinternals.com/files/ProcessMonitor.zip -O ProcessMonitor.zip
+    wget -q https://download.sysinternals.com/files/AccessChk.zip -O AccessChk.zip
+    wget -q https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O Invoke-Rubeus.ps1
+    wget -q https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O Invoke-Kerberoast.ps1
+fi
 
 echo Adding hashcat rules
 echo ====================

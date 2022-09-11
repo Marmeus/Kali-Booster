@@ -17,7 +17,7 @@ cd Kali-Booster
 chmod +x kaliBoost.sh
 ./kaliBoost.sh
 ```
-# Random stuff
+# What does it do?
 
 ## New Wallpaper
 
@@ -124,7 +124,7 @@ kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
 [...]
 ```
 
-# Utilies
+# Utilities
 Interesting files at `~/UTILS/` that might be usefull during an attack.
 
 - LinEnum
