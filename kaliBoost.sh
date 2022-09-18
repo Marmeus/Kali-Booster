@@ -7,10 +7,6 @@ echo ================
 setxkbmap -layout $keyboard_layout
 echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
 
-# do not ask for restarting services
-sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
-
-
 echo "SYSTEM PACKAGES"
 echo =================
 echo Updating package repositories...
@@ -22,15 +18,15 @@ fi
 
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
-    sudo apt-get -qq install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 -y >/dev/null
-    sudo apt-get -qq install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y >/dev/null
+    sudo apt-get -qq install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv -y 
+    sudo apt-get -qq install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y 
 fi
 
 echo "Installing VM requirements"
 echo ============================
 if [[ $vm == "VBox" ]]; then
     sudo apt -qq install virtualbox-guest-utils -y 
-    $vboxsf=$(grep vboxsf /etc/group | awk -F: '{print $3}')
+    $vboxsf=$(grep vboxsf /etc/group | cut -d ':' -f 3)
     sudo usermod -aG $vboxsf $USER
 elif [[ $vm == "VMWare" ]]; then
     sudo apt -qq intall fuse open-vm-tools-desktop -y
@@ -350,9 +346,6 @@ echo ====================
 sudo mkdir /opt/HashcatRules/
 sudo wget -q https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
 
-
-# Ask again for restarting services
-sudo sed -i 's/#$nrconf{restart} = '"'"'a'"'"';/$nrconf{restart} = '"'"'i'"'"';/g' /etc/needrestart/needrestart.conf
 
 echo ######################################################################
 echo                           REINICIANDO
