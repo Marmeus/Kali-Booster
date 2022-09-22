@@ -26,6 +26,12 @@ if [[ $1 != *"/"* ]]; then
     exit 1
 fi
 
+network_mask=$(echo $1 | cut -d '/' -f 2)
+if [[ ! $NETWORK_MASKS =~ (^|[[:space:]])$network_mask($|[[:space:]]) ]]; then
+    >&2 echo "Network mask not valid"
+    >&2 echo "Accepted maks: 32, 24, 16"
+    exit 1
+fi
 
 # =======================================
 #             GET LIST OF IPs 
@@ -43,8 +49,16 @@ do
     echo -e "\n\n============================"
     echo "Scanning IP: $ip"
     echo -e "============================"
-    # folder = OUTPUT_DIR + HOST
-    folder=$output_dir/$ip
+    if [[ $network_mask == 32 || $network_mask == 24 ]]; then
+        # folder = OUTPUT_DIR + HOST
+        folder=$output_dir$(echo $ip | cut -d '.' -f 4)
+    elif [[ $network_mask == 16 ]]; then
+        # folder = OUTPUT_DIR + NETWORK + HOST
+        folder=$output_dir$(echo $ip | cut -d '.' -f 3,4 --output-delimiter '/') 
+    else
+        echo "ERROR: Wrong network mask"
+        exit 1
+    fi
     sudo nmap -Pn --max-retries 1 -T4 --min-rate 4500 --max-rtt-timeout 1500ms -sS -p- $ip -oA $TEMP_FOLDER/tmp_scan/AllPorts 
     result=$(grep -lE "/tcp (open|filtered)" $TEMP_FOLDER/tmp_scan/AllPorts.nmap)
     if [[ $result == "" ]]; then

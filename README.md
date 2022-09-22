@@ -98,17 +98,17 @@ Some useful scripts are downloaded to `~/Scripts`.
 - **massScan.sh**: Scans all the hosts in a given network, creating a folder structure which can be very handy for later steps in a pentest.
 
 ```bash
-kali@kali:~/Documents/Scripts$ ./massScan.sh 192.168.1.1/24 /tmp/results
-kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
-/tmp/massScan/
-├── 0
+kali@kali:~/Documents/Scripts$ ./massScan.sh 192.168.1.1/24 /tmp/massScan/
+ali@kali:/tmp$ tree /tmp/massScan/
+/tmp/results
+├── 192.168.1.1
 │   ├── AllPorts.gnmap
 │   ├── AllPorts.nmap
 │   └── AllPorts.xml
-├── 1
+├── 192.168.1.2
 │   ├── AllPorts.gnmap
 │   ├── AllPorts.nmap
-│   ├── AllPorts.xml
+│   └── AllPorts.xml
 [...]
 ```
 
@@ -118,15 +118,16 @@ kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
 kali@kali:~/Documents/Scripts$ ./massScan_depth.sh /tmp/massScan/
 kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
 /tmp/massScan/
-├── 0
-│   ├── AllPorts.gnmap
-│   ├── AllPorts.nmap
-│   └── AllPorts.xml
-├── 1
+├── 192.168.1.1
 │   ├── AllPorts.gnmap
 │   ├── AllPorts.nmap
 │   ├── AllPorts.xml
-│   └── PortsDepth.xml
+│   └── PortsDepth.txt
+├── 192.168.1.229
+│   ├── AllPorts.gnmap
+│   ├── AllPorts.nmap
+│   ├── AllPorts.xml
+│   └── PortsDepth.txt
 [...]
 ```
 
