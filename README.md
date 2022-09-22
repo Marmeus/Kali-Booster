@@ -1,11 +1,17 @@
 # Introduction
-The script `kaliBoost.sh` tries to improve Kali Linux by installing new tools, dictionaries and bringing back some tools that doesn't come with kali anymore like the old bashrc stytle and pip2.
-Furtheremore, this script creates some usefull aliases that you might need in your pentesting activities and some folders where you can store your shared files from HTB or THM.
+The script `kaliBoost.sh` tries to improve Kali Linux by installing new tools and dictionaries and bringing back some tools that don't come with kali anymore, like the old bashrc style and pip2.
+Furthermore, this script creates some useful aliases that you might need in your pentesting activities and some folders where you can store your shared files from HTB or THM.
 
 # Pre-Installation
-1. Because a I have a spanish keyboard it adds the spanish keyboard layout to `.bashrc`, if you have a different layout change it at line 61.
-2. The openvpn aliases executes my openvpn files change them by your HackTheBox/tryHackMe name.
-3. In order to get access to the shared folders you need to execute `sudo usermod -aG vboxsf kali`
+I have added a `config.cfg` where you need to choose:
+
+* Tools to be installed (**Default**: All)
+* The keyboard layout (**Default**: es)
+* The hypervisor you are using (VBox or VMWare ) (**Default**: VBox)
+* Add configuration files (**Default**: true)
+* ....
+
+I encourage you to check it out before executing the script. Also, for the variables with a path, if you do not want to be executed that part of the script, just remove the whole path like `wallpaper=`.
 
 # Installation
 
@@ -41,7 +47,7 @@ Sometimes you are tired of executing the same long command over and over this is
 -  **allportsUDP**: Obtains all opened UDP ports from the specified hosts.
 -  **puertos**: Sends to your clipboard all opened ports obtained from the stored output of **allports** and **allportsUDP**. A file must be specified. 
 -  **portsDepth**: Scan the specified ports to the specified IPs.
--  **vulns**: Run the vulns nmap scripts against the specified hosts.
+-  **vulns**: Run the vulns Nmap scripts against the specified hosts.
 
 # New Wordlists
 
@@ -106,7 +112,7 @@ kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
 [...]
 ```
 
-- **massScan_depth.sh**: Based on the output of `massScan.sh`, it makes an Nmap  with default scripts to get more information about each opened port.
+- **massScan_depth.sh**: Based on the output of `massScan.sh`, it makes a Nmap with default scripts to get more information about each opened port.
 
 ```bash
 kali@kali:~/Documents/Scripts$ ./massScan_depth.sh /tmp/massScan/
