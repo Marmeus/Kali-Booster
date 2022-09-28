@@ -90,9 +90,9 @@ Some useful scripts are downloaded to `~/Scripts`.
   Checking share: 'C$'
   Checking share: 'D$'
   Checking share: 'print$'
+    - <USER> has READ access
   Checking share: 'bills$'
-    - <USER> has read access
-    - <USER> has write access
+    - <USER> has READ WRITE access
   ```
 
 - **massScan.sh**: Scans all the hosts in a given network, creating a folder structure which can be very handy for later steps in a pentest.
