@@ -1,6 +1,6 @@
 #!/bin/bash
 source ./config.cfg
-path=$(pwd)
+KALI_BOOSTER_PATH=$(pwd)
 
 echo "CHANGING LAYOUT"
 echo ================
@@ -134,7 +134,7 @@ if [[ $firefox_plugins == "true" ]]; then
     echo Configuring foxyproxy
     temp=$(grep -iR 0mphhjoh ~/.mozilla/firefox 2>&1 | grep moz-extension | cut -d' ' -f 2)
     sqliteFile=${temp::-1}
-    cp $path/Assets/burp.sqlite $sqliteFile
+    cp $KALI_BOOSTER_PATH/Assets/burp.sqlite $sqliteFile
     dbOrigin=$(echo $sqliteFile | cut -d'+' -f 4 | cut -d'/' -f 1)
     sqlite3 $sqliteFile "update database set origin = 'moz-extension://$dbOrigin';"
 fi
@@ -220,6 +220,9 @@ if [[ $wordlists == "true" ]]; then
     
     echo Kerberos Users List 
     sudo git clone -q https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists
+    
+    echo SQLi Auth Bypass - Master List
+    sudo mv $KALI_BOOSTER_PATH/Assets/SQLi_Auth_Bypass-Master_List.txt /usr/share/wordlists/SQLi_Auth_Bypass-Master_List.txt
 fi
 
 echo "HACK FONT"
@@ -317,7 +320,7 @@ fi
 echo "UTILITIES"
 echo ===========
 if [[ ! $utilities_path == "" ]]; then
-    cd $path
+    cd $KALI_BOOSTER_PATH
     echo Populating utilities at $utilities_path
     mkdir $utilities_path
     cp -r ./MaliciousImages/ $utilities_path

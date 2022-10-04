@@ -55,6 +55,7 @@ Sometimes you are tired of executing the same long command over and over this is
 -  [SecLists](https://github.com/danielmiessler/SecLists)
 -  [Active Directory](https://github.com/Cryilllic/Active-Directory-Wordlists)
 -  Adds `.git` to `directory-list-2.3-medium.txt`
+-  SQLi Auth Bypass - Master List
 
 # Hashcat Rules
 Added hashcat rules at `/opt/HashcatRules/`
