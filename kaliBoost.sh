@@ -139,14 +139,31 @@ if [[ $firefox_plugins == "true" ]]; then
     sqlite3 $sqliteFile "update database set origin = 'moz-extension://$dbOrigin';"
 fi
 
-echo "WALLPAPER"
+echo "KALI ICONS"
 echo ===========
-if [[ ! $wallpaper ]]; then
+if [[ $wallpaper == *"/Assets/"* ]]; then
+    echo Changing Wallpaper...
+    cp $KALI_BOOSTER_PATH/$wallpaper ~/Pictures/Wallpaper.png
+    sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+elif [[ ! $wallpaper ]]; then
+    # Empty string
+    echo -n
+else
     echo Changing Wallpaper...
     cp $wallpaper ~/Pictures/Wallpaper.png
-    sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 fi
 
+if [[ $icon-panel-menu == *"/Assets/"* ]]; then
+    echo Changing panel menu icon...
+    cp $KALI_BOOSTER_PATH/$icon-panel-menu ~/Pictures/button-icon.png
+    sed -if 's/kali-panel-menu/.\/Pictures\/button-icon.png/g' ~/.config/xfce4/panel/whiskermenu-1.rc
+elif [[ ! $icon-panel-menu ]]; then
+    # Empty string
+    echo -n
+else
+    echo Changing panel menu icon...
+    cp $icon-panel-menu ~/Pictures/button-icon.png
+fi
 echo "Adding MIBS to snmp"
 echo =====================
 sudo apt -qq install snmp-mibs-downloader -y
