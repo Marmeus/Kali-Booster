@@ -141,29 +141,33 @@ fi
 
 echo "KALI ICONS"
 echo ===========
-if [[ $wallpaper == *"/Assets/"* ]]; then
-    echo Changing Wallpaper...
-    cp $KALI_BOOSTER_PATH/$wallpaper ~/Pictures/Wallpaper.png
-    sed -if 's/\/usr\/share\/backgrounds\/kali-16x9\/default/.\/Pictures\/Wallpaper.png/g' ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+cd $KALI_BOOSTER_PATH
+if [[ $wallpaper == "./Assets/"* ]]; then
+    echo Changing backgroung to Marmeus\' Wallpaper...
+    cp $wallpaper ~/Pictures/wallpaper.png
+    sed -if "s/\/usr\/share\/backgrounds\/kali-16x9\/default/\/home\/$(whoami)\/Pictures\/wallpaper.png/g" ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 elif [[ ! $wallpaper ]]; then
     # Empty string
+    echo No changes were made
     echo -n
 else
-    echo Changing Wallpaper...
-    cp $wallpaper ~/Pictures/Wallpaper.png
+    echo Changing background to custom Wallpaper...
+    cp $wallpaper ~/Pictures/wallpaper.png
 fi
 
-if [[ $icon-panel-menu == *"/Assets/"* ]]; then
-    echo Changing panel menu icon...
-    cp $KALI_BOOSTER_PATH/$icon-panel-menu ~/Pictures/button-icon.png
-    sed -if 's/kali-panel-menu/.\/Pictures\/button-icon.png/g' ~/.config/xfce4/panel/whiskermenu-1.rc
-elif [[ ! $icon-panel-menu ]]; then
+if [[ $icon_panel_menu == "./Assets/"* ]]; then
+    echo Changing panel menu icon to Marmeus' icon...
+    cp $icon_panel_menu ~/Pictures/button-icon.png
+    cp ./Assets/whiskermenu-1.rc ~/.config/xfce4/panel/whiskermenu-1.rc
+    sed -if "s/kali-panel-menu/\/home\/$(whoami)\/Pictures\/button-icon.png/g" ~/.config/xfce4/panel/whiskermenu-1.rc
+elif [[ ! $icon_panel_menu ]]; then
     # Empty string
-    echo -n
+    echo No changes were made
 else
-    echo Changing panel menu icon...
-    cp $icon-panel-menu ~/Pictures/button-icon.png
+    echo Changing panel menu icon to custom icon...
+    cp "$icon_panel_menu" ~/Pictures/button-icon.png
 fi
+
 echo "Adding MIBS to snmp"
 echo =====================
 sudo apt -qq install snmp-mibs-downloader -y
