@@ -156,7 +156,7 @@ else
 fi
 
 if [[ $icon_panel_menu == "./Assets/"* ]]; then
-    echo Changing panel menu icon to Marmeus' icon...
+    echo Changing panel menu icon to Marmeus\' icon...
     cp $icon_panel_menu ~/Pictures/button-icon.png
     cp ./Assets/whiskermenu-1.rc ~/.config/xfce4/panel/whiskermenu-1.rc
     sed -if "s/kali-panel-menu/\/home\/$(whoami)\/Pictures\/button-icon.png/g" ~/.config/xfce4/panel/whiskermenu-1.rc
@@ -182,13 +182,15 @@ mkdir ~/Scripts
 cp -r Scripts/ ~/Scripts/
 
 
-echo "ALIASES"
+echo "ALIASES 2 BASHRC"
 echo =========
-if [[ $aliases == "true" ]]; then
+if [[ $aliases_2_bashrc == "true" ]]; then
     echo  Adding aliases...
     echo 'mkcd (){ mkdir -p -- "$1" &&    cd -P -- "$1"; }' >> ~/.bashrc
     echo "puertos (){ puertos=\$(cat \$1 | tail -n +2 | grep open | awk -F/  '{print \$1}'  ORS=',' | sed 's/.\$//'); echo -n \$puertos | xclip -sel clip; echo \$puertos; } " >> ~/.bashrc
     echo "sttysize(){ temp=\$(echo \$(stty size) | awk '{split(\$0,val,\" \"); printf \"stty rows %i columns %i\n\", val[1], val[2]}'); echo \$temp; echo -n \$temp | xclip -sel clip;}" >> ~/.bashrc
+    echo 'encrypt(){ tar -czf - $1 | openssl enc -e -aes256 -pbkdf2 -out $(echo -n $1 | sed 's/\/$//').tar.gz.enc; }' >> ~/.bashrc
+    echo 'decrypt(){ openssl enc -d -aes256 -pbkdf2 -in $1 | tar -xvzf -; }' >> ~/.bashrc
     echo "alias rot13=\"tr 'A-Za-z' 'N-ZA-Mn-za-m'\"" >> ~/.bashrc
     echo 'alias allports="sudo nmap -v -sS -p- -n -T4 -oN AllPorts.txt"' >> ~/.bashrc
     echo 'alias allportsUDP="sudo nmap -v -sU -p- -n -oN AllPortsUDP.txt"' >> ~/.bashrc
@@ -344,7 +346,7 @@ if [[ ! $utilities_path == "" ]]; then
     cd $KALI_BOOSTER_PATH
     echo Populating utilities at $utilities_path
     mkdir $utilities_path
-    cp -r ./MaliciousImages/ $utilities_path
+    cp -r ./MaliciousImages/ ~/Pictures/
     cd $utilities_path
     wget -q https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O LinEnum.sh
     wget -q https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O linpeas.sh
