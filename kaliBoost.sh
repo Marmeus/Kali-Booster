@@ -189,7 +189,7 @@ if [[ $aliases_2_bashrc == "true" ]]; then
     echo 'mkcd (){ mkdir -p -- "$1" &&    cd -P -- "$1"; }' >> ~/.bashrc
     echo "puertos (){ puertos=\$(cat \$1 | tail -n +2 | grep open | awk -F/  '{print \$1}'  ORS=',' | sed 's/.\$//'); echo -n \$puertos | xclip -sel clip; echo \$puertos; } " >> ~/.bashrc
     echo "sttysize(){ temp=\$(echo \$(stty size) | awk '{split(\$0,val,\" \"); printf \"stty rows %i columns %i\n\", val[1], val[2]}'); echo \$temp; echo -n \$temp | xclip -sel clip;}" >> ~/.bashrc
-    echo 'encrypt(){ tar -czf - $1 | openssl enc -e -aes256 -pbkdf2 -out $(echo -n $1 | sed 's/\/$//').tar.gz.enc; }' >> ~/.bashrc
+    echo 'encrypt(){ tar -czf - $1 | openssl enc -e -aes256 -pbkdf2 -out $(echo -n $1 | sed \'s/\/$//\').tar.gz.enc; }' >> ~/.bashrc
     echo 'decrypt(){ openssl enc -d -aes256 -pbkdf2 -in $1 | tar -xvzf -; }' >> ~/.bashrc
     echo "alias rot13=\"tr 'A-Za-z' 'N-ZA-Mn-za-m'\"" >> ~/.bashrc
     echo 'alias allports="sudo nmap -v -sS -p- -n -T4 -oN AllPorts.txt"' >> ~/.bashrc
