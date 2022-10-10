@@ -37,7 +37,9 @@ Install the [Hack](https://github.com/source-foundry/Hack) font on the system.
 Sometimes you are tired of executing the same long command over and over this is why I created the following aliases.
 -  **mkcd**: Creates and accesses the directory.
 -  **sttysize**: Sends to your clipboard the command `stty rows X columns Y` with the correct rows and columns for your full TTY shell. 
-- **rot13**: Does rot13 to the input sent through a pipe.
+-  **rot13**: Does rot13 to the input sent through a pipe.
+-  **encrypt**: Encrypt a folder|file with a symmetric passphrase
+- **decrypt**: Decrypt the encrypted folder|file with a symmetric passphrase
 -  **htb**: Starts openvpn for hackthebox.
 -  **htbr**: Starts openvpn for hackthebox release arena.
 -  **htbf**: Starts openvpn for hackthebox fortress.
