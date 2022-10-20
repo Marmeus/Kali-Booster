@@ -85,7 +85,7 @@ echo changing .tmux.conf
 cat << EOF > ~/.tmux.conf
 set-option -g history-limit 30000
 set -g status-right-length 100
-set -g status-right "#[fg=colour255,bg=colour000] #(ip -o -4 add show dev tun0 2>/dev/null |  awk {'print \$4'} | cut -f1 -d/) #[fg=colour000,bg=colour11] #((ip -o -4 add show dev eth0 || ip -o -4 add show dev enp0s3) 2>/dev/null |  awk {'print \$4'} | cut -f1 -d/) #[fg=colour255,bg=colour1] #H  #[fg=colour0,bg=colour25] %H:%M |#[fg=colour255] %d/%m/%Y "
+set -g status-right "#[fg=colour255,bg=colour000] #(ip -o -4 add show dev tun0 2>/dev/null |  awk {'print $4'} | cut -f1 -d/) #[fg=colour000,bg=colour11] #(hostname -I | awk '{print $1}') #[fg=colour255,bg=colour1] #H  #[fg=colour0,bg=colour25] %H:%M |#[fg=colour255] %d/%m/%Y "
 EOF
 fi
 
