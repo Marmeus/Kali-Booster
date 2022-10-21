@@ -18,8 +18,7 @@ fi
 
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
-    sudo apt-get -qq install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv -y 
-    sudo apt-get -qq install gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel -y 
+    sudo apt-get -qq install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3.10-venv -y 
 fi
 
 echo "Installing VM requirements"
@@ -178,8 +177,7 @@ echo "" | sudo tee /etc/snmp/snmp.conf
 echo "SCRIPTS"
 echo =========
 echo "Adding Scripts to ~/Scripts"
-mkdir ~/Scripts
-cp -r Scripts/ ~/Scripts/
+mv Scripts/ ~/Scripts/
 
 
 echo "ALIASES 2 BASHRC"
@@ -260,45 +258,71 @@ echo "TOOLS"
 echo =======
 
 if [[ $tools == "true" ]]; then
+    mkdir -p ~/Tools/Web/
+    
     echo Installing FFUZ...
     wget -q https://github.com/ffuf/ffuf/releases/download/v1.3.1/ffuf_1.3.1_linux_amd64.tar.gz -O /tmp/FFUZ.tar.gz
     cd /tmp/
     tar -xvzf ./FFUZ.tar.gz >/dev/null
     sudo cp ./ffuf /usr/bin/
+   
+    echo Installing bypass-url-parser...
+    git clone -q https://github.com/laluka/bypass-url-parser.git ~/Tools/Web/bypass-url-parser
+    cd ~/Tools/Web/bypass-url-parser
+    virtualenv -p python3 .py3
+    source .py3/bin/activate
+    pip install -q -r requirements.txt 2>&1 >/dev/null
+    deactivate 
     
+    echo Installing dontgo403...
+    git clone -q https://github.com/devploit/dontgo403 ~/Tools/Web/dontgo403; 
+    cd ~/Tools/Web/dontgo403; 
+    go get 2>&1 >/dev/null
+    go build 2>&1 >/dev/null
+    
+    echo Installing forbidden...
+    git clone -q https://github.com/ivan-sincek/forbidden ~/Tools/Web/forbidden
+    cd ~/Tools/Web/forbidden/src/
+    pip3 install -q -r requirements.txt 2>&1 >/dev/null
+    
+    echo Installing byp4xx...
+    git clone https://github.com/lobuhi/byp4xx.git ~/Tools/Web/byp4xx
+    cd ~/Tools/Web/byp4xx
+    chmod u+x byp4xx.py
+
     echo Installing Impacket...
     sudo git clone -q https://github.com/SecureAuthCorp/impacket.git /opt/impacket
     cd /opt/impacket
-    pip3 install -q -r /opt/impacket/requirements.txt >/dev/null
-    cd /opt/impacket/ && sudo python3 ./setup.py install >/dev/null
+    pip3 install -q -r /opt/impacket/requirements.txt 2>&1 >/dev/null
+    cd /opt/impacket/ && sudo python3 ./setup.py install 2>&1 >/dev/null
     
     echo Installing Volatility 2...
     sudo apt-get -qq install yara python2.7-dev -y
     sudo git clone -q https://github.com/volatilityfoundation/volatility.git /opt/volatility
     cd /opt/volatility
-    sudo python setup.py install >/dev/null
+    sudo python setup.py install 2>&1 >/dev/null
     echo Volatility 2: distorm plugin...
     sudo git clone -q https://github.com/gdabah/distorm.git
     cd distorm
-    sudo python2.7 setup.py build install >/dev/null
+    sudo python2.7 setup.py build install 2>&1 >/dev/null
     echo Volatility 2: pycrypto  plugin...
     wget -q https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
     tar -xvzf pycrypto-2.6.1.tar.gz >/dev/null
     cd pycrypto-2.6.1
-    sudo python2.7 setup.py build install >/dev/null
+    sudo python2.7 setup.py build install 2>&1 >/dev/null
     
     
     echo Installing Volatility 3
-    sudo git clone-q  https://github.com/volatilityfoundation/volatility3.git /opt/volatility3
+    sudo git clone -q  https://github.com/volatilityfoundation/volatility3.git /opt/volatility3
     cd /opt/volatility3
-    sudo python3 setup.py build >/dev/null
-    sudo python3 setup.py install >/dev/null
-    sudo pip3 install -q -r requirements.txt >/dev/null
+    sudo python3 setup.py build 2>&1 >/dev/null
+    sudo python3 setup.py install 2>&1 >/dev/null
+    sudo pip3 install -q -r requirements.txt 2>&1 >/dev/null
     
     echo Installing JWT_TOOL...
     sudo git clone -q https://github.com/ticarpi/jwt_tool /opt/jwt_tool
     cd /opt/jwt_tool
-    sudo python3 -m pip install -q termcolor cprint pycryptodomex requests >/dev/null
+    sudo python3 -m pip install -q termcolor cprint pycryptodomex requests 2>&1 >/dev/null
     echo 'alias jwt_tool="python3 /opt/jwt_tool/jwt_tool.py"' >> ~/.bashrc
     
     echo Installing Windows Exploit Suggester...
@@ -307,7 +331,7 @@ if [[ $tools == "true" ]]; then
     echo 'alias windows-exploit-suggester="python2.7 /opt/windows-exploit-suggester.py"' >> ~/.bashrc
     
     echo Installing EVIL-WINRM...
-    sudo gem install evil-winrm >/dev/null
+    sudo gem install evil-winrm 2>&1 >/dev/null
     
     echo Installing STEGSEEK...
     wget -q https://github.com/RickdeJager/stegseek/releases/download/v0.6/stegseek_0.6-1.deb -O /tmp/stegseek.deb
@@ -326,7 +350,7 @@ if [[ $tools == "true" ]]; then
     sudo chmod +x /usr/bin/kerbrute
     
     echo Installing GIT-DUMPER...
-    sudo pip install -q git-dumper >/dev/null
+    sudo pip install -q git-dumper 2>&1 >/dev/null
     
     
     echo Installing VS CODE...
