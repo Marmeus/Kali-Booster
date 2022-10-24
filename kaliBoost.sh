@@ -245,7 +245,13 @@ if [[ $wordlists == "true" ]]; then
     sudo git clone -q https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists
     
     echo SQLi Auth Bypass - Master List
-    sudo mv $KALI_BOOSTER_PATH/Assets/SQLi_Auth_Bypass-Master_List.txt /usr/share/wordlists/SQLi_Auth_Bypass-Master_List.txt
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/SQLi_Auth_Bypass-Master_List.txt /usr/share/wordlists/SQLi_Auth_Bypass-Master_List.txt
+
+    echo Windows file names
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/windows_files.txt /usr/share/wordlists/windows_files.txt
+
+    echo Filename extension list 
+    sudo wget https://gist.githubusercontent.com/securifera/e7eed730cbe1ce43d0c29d7cd2d582f4/raw/908a7934ca448f389275432514eaa157def9c385/Filename%2520extension%2520list -O /usr/share/wordlists/filename_extension_list.txt
 fi
 
 echo "HACK FONT"
