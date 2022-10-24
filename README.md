@@ -134,7 +134,12 @@ kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
 [...]
 ```
 
+* **403bypasser_installer.sh** & **403bypasser.sh**: A simple script that executes several 403 forbidden bypass tools for a given URL.
+
+
+
 # Utilities
+
 Interesting files at `~/UTILS/` that might be usefull during an attack.
 
 - LinEnum

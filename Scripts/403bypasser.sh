@@ -28,7 +28,7 @@ cd ..
 echo dontgo403
 echo =========
 cd ~/Tools/Web/dontgo403/
-./dontgo403 -u $1
+./dontgo403 -u $1 | grep -Ev '403|400|404'
 cd ..
 
 echo forbidden
