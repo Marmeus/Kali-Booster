@@ -128,6 +128,7 @@ if [[ $firefox_plugins == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+    wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
     
     echo Configuring foxyproxy
@@ -295,6 +296,16 @@ if [[ $tools == "true" ]]; then
     git clone https://github.com/lobuhi/byp4xx.git ~/Tools/Web/byp4xx
     cd ~/Tools/Web/byp4xx
     chmod u+x byp4xx.py
+
+    echo Installing httpx...
+    cd /tmp/
+    wget -q $(curl -sq https://api.github.com/repos/projectdiscovery/httpx/releases/latest | grep -E 'https.*_linux_amd64.zip' | cut -d '"' -f 4) -O httpx.zip; 
+    unzip -q httpx.zip; 
+    sudo mv httpx /usr/bin/
+
+    echo Installing rustscan...
+    wget -q https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb -O rustscan.deb
+    sudo apt -qqy install /tmp/rustscan.deb 2>&1 >/dev/null
 
     echo Installing Impacket...
     sudo git clone -q https://github.com/SecureAuthCorp/impacket.git /opt/impacket

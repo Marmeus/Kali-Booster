@@ -81,6 +81,7 @@ Added hashcat rules at `/opt/HashcatRules/`
 - [Wappalyzer](https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/)
 - [User-Agent editor](https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/)
 - [Cookie-Editor](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/)
+- [Firefox Multi-Account Containers](https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/)
 
 # Custom Scripts
 Some useful scripts are downloaded to `~/Scripts`.
@@ -135,8 +136,6 @@ kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
 ```
 
 * **403bypasser_installer.sh** & **403bypasser.sh**: A simple script that executes several 403 forbidden bypass tools for a given URL.
-
-
 
 # Utilities
 
