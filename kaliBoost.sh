@@ -388,6 +388,7 @@ if [[ ! $utilities_path == "" ]]; then
     echo Populating utilities at $utilities_path
     mkdir $utilities_path
     cp -r ./MaliciousImages/ ~/Pictures/
+    cp -r ./Assets/multi_encoder.html $utilities_path
     cd $utilities_path
     wget -q https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O LinEnum.sh
     wget -q https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O linpeas.sh
