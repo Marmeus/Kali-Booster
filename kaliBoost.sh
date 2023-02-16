@@ -9,7 +9,8 @@ echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
 
 echo "SYSTEM PACKAGES"
 echo =================
-echo Updating package repositories...
+echo Updating package repositories...´
+echo THIS WILL TAKE A LOT OF TIME :D
 sudo apt-get -qq update >/dev/null
 if [[ $upgrade_system == "true" ]];then
     echo "Upgrading system..."
@@ -18,17 +19,17 @@ fi
 
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
-    sudo apt-get -qq install make vim tmux vim-gtk wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3.10-venv -y 
+    sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3.10-venv -y 
 fi
 
 echo "Installing VM requirements"
 echo ============================
 if [[ $vm == "VBox" ]]; then
-    sudo apt -qq install virtualbox-guest-utils -y 
+    sudo apt-get -qq install virtualbox-guest-utils -y 
     $vboxsf=$(grep vboxsf /etc/group | cut -d ':' -f 3)
     sudo usermod -aG $vboxsf $USER
 elif [[ $vm == "VMWare" ]]; then
-    sudo apt -qq intall fuse open-vm-tools-desktop -y
+    sudo apt-get -qq intall fuse open-vm-tools-desktop -y
     # Share folders mount at boot time: 
     echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
 else
@@ -140,7 +141,8 @@ if [[ $firefox_plugins == "true" ]]; then
 fi
 
 echo "KALI ICONS"
-echo ===========
+echo ===========  
+cp BurpPro.png ~/Pictures/
 cd $KALI_BOOSTER_PATH
 if [[ $wallpaper == "./Assets/"* ]]; then
     echo Changing backgroung to Marmeus\' Wallpaper...
@@ -170,7 +172,7 @@ fi
 
 echo "Adding MIBS to snmp"
 echo =====================
-sudo apt -qq install snmp-mibs-downloader -y
+sudo apt-get -qq install snmp-mibs-downloader -y
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
 echo "" | sudo tee /etc/snmp/snmp.conf
 
@@ -305,7 +307,7 @@ if [[ $tools == "true" ]]; then
 
     echo Installing rustscan...
     wget -q https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb -O rustscan.deb
-    sudo apt -qqy install /tmp/rustscan.deb 2>&1 >/dev/null
+    sudo apt-get -qqy install /tmp/rustscan.deb 2>&1 >/dev/null
 
     echo Installing Impacket...
     sudo git clone -q https://github.com/SecureAuthCorp/impacket.git /opt/impacket
@@ -352,7 +354,7 @@ if [[ $tools == "true" ]]; then
     
     echo Installing STEGSEEK...
     wget -q https://github.com/RickdeJager/stegseek/releases/download/v0.6/stegseek_0.6-1.deb -O /tmp/stegseek.deb
-    sudo apt -qq install /tmp/stegseek.deb 
+    sudo apt-get -qq install /tmp/stegseek.deb 
     
     echo Installing STEGO-TOOLKIT...
     sudo docker pull dominicbreuker/stego-toolkit >/dev/null
@@ -376,9 +378,9 @@ if [[ $tools == "true" ]]; then
     sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
     sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
     rm -f packages.microsoft.gpg
-    sudo apt -qq install apt-transport-https
-    sudo apt -qq update
-    sudo apt -qq install code -y 
+    sudo apt-get -qq install apt-transport-https
+    sudo apt-get -qq update
+    sudo apt-get -qq install code -y 
 fi
 
 echo "UTILITIES"
