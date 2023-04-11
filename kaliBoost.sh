@@ -253,6 +253,9 @@ if [[ $wordlists == "true" ]]; then
 
     echo Filename extension list 
     sudo wget https://gist.githubusercontent.com/securifera/e7eed730cbe1ce43d0c29d7cd2d582f4/raw/908a7934ca448f389275432514eaa157def9c385/Filename%2520extension%2520list -O /usr/share/wordlists/filename_extension_list.txt
+    
+    echo JWT Secrets
+    sudo wget https://raw.githubusercontent.com/wallarm/jwt-secrets/master/jwt.secrets.list -O /usr/share/wordlists/jwt_secrets.txt
 fi
 
 echo "HACK FONT"
