@@ -26,7 +26,7 @@ echo "Installing VM requirements"
 echo ============================
 if [[ $vm == "VBox" ]]; then
     sudo apt-get -qq install virtualbox-guest-utils -y 
-    $vboxsf=$(grep vboxsf /etc/group | cut -d ':' -f 3)
+    vboxsf=$(grep vboxsf /etc/group | cut -d ':' -f 3)
     sudo usermod -aG $vboxsf $USER
 elif [[ $vm == "VMWare" ]]; then
     sudo apt-get -qq intall fuse open-vm-tools-desktop -y
