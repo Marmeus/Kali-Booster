@@ -45,6 +45,8 @@ if [[ $install_pip2 == "true" ]]; then
     sudo python2.7 get-pip2.7.py >/dev/null
     echo installing pip3...
     sudo python3 get-pip3.py >/dev/null
+    sudo pip2.7 install --upgrade setuptools
+    pip2.7 install --upgrade setuptools
     echo Check correct installation
     pip2 -V
     pip3 -V
