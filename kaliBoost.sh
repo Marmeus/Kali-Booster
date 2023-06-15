@@ -19,7 +19,7 @@ fi
 
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
-    sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3.10-venv -y 
+    sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3-venv -y 
 fi
 
 echo "Installing VM requirements"
