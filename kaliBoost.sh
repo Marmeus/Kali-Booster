@@ -144,7 +144,7 @@ fi
 
 echo "KALI ICONS"
 echo ===========  
-cp BurpPro.png ~/Pictures/
+cp ./Assets/BurpPro.png ~/Pictures/
 cd $KALI_BOOSTER_PATH
 if [[ $wallpaper == "./Assets/"* ]]; then
     echo Changing backgroung to Marmeus\' Wallpaper...
