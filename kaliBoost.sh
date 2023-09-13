@@ -77,6 +77,8 @@ cat << EOF > ~/.vimrc
 :set tabstop=4 shiftwidth=4 expandtab 
 :set noai nocin nosi inde= 
 :syntax on
+:noremap Zi <c-w>_ \| <c-w>\|
+:noremap Zo <c-w>=
 EOF
 fi
 
