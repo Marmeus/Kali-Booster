@@ -79,6 +79,7 @@ cat << EOF > ~/.vimrc
 :syntax on
 :noremap Zi <c-w>_ \| <c-w>\|
 :noremap Zo <c-w>=
+:autocmd FileType * retab
 EOF
 fi
 
