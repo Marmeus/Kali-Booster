@@ -42,9 +42,9 @@ if [[ $install_pip2 == "true" ]]; then
     echo Uninstalling pip3...
     sudo pip uninstall pip >/dev/null
     echo Installing pip2.7....
-    sudo python2.7 get-pip2.7.py >/dev/null
+    sudo python2.7 Assets/get-pip2.7.py >/dev/null
     echo installing pip3...
-    sudo python3 get-pip3.py >/dev/null
+    sudo python3 Assets/get-pip3.py >/dev/null
     sudo pip2.7 install --upgrade setuptools
     pip2.7 install --upgrade setuptools
     echo Check correct installation
@@ -122,13 +122,13 @@ echo Overwritting .bashrc
 echo ====================
 if [[ $terminal=="bash" ]]; then
     sudo chsh -s /bin/bash $(whoami)
-    cp bashrc ~/.bashrc
+    cp Assets/bashrc ~/.bashrc
 fi
 
 echo "FIREFOX PLUGINS"
 echo =================
 if [[ $firefox_plugins == "true" ]]; then
-    echo Installing Firefox plugins: foxyproxy, cookie-editor, user-agent, wappalyzer
+    echo Installing Firefox plugins: foxyproxy, cookie-editor, user-agent, wappalyzer, onetab
     echo NOTE: CLOSE FIREFOX ONCE THE THE PLUGINS HAVE BEEN INSTALED
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
@@ -136,6 +136,7 @@ if [[ $firefox_plugins == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
+    wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/onetab/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
     
     echo Configuring foxyproxy
@@ -186,7 +187,7 @@ echo "" | sudo tee /etc/snmp/snmp.conf
 echo "SCRIPTS"
 echo =========
 echo "Adding Scripts to ~/Scripts"
-mv Scripts/ ~/Scripts/
+mv ./Assets/Scripts/ ~/Scripts/
 
 
 echo "ALIASES 2 BASHRC"
@@ -398,7 +399,7 @@ if [[ ! $utilities_path == "" ]]; then
     cd $KALI_BOOSTER_PATH
     echo Populating utilities at $utilities_path
     mkdir $utilities_path
-    cp -r ./MaliciousImages/ ~/Pictures/
+    cp -r ./Assets/MaliciousImages/ ~/Pictures/
     cp -r ./Assets/multi_encoder.html $utilities_path
     cd $utilities_path
     wget -q https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O LinEnum.sh
