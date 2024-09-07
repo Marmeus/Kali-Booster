@@ -2,11 +2,6 @@
 source ./config.cfg
 KALI_BOOSTER_PATH=$(pwd)
 
-echo "CHANGING LAYOUT"
-echo ================
-setxkbmap -layout $keyboard_layout
-echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
-
 echo "SYSTEM PACKAGES"
 echo =================
 echo Updating package repositories...´
@@ -124,6 +119,11 @@ if [[ $terminal=="bash" ]]; then
     sudo chsh -s /bin/bash $(whoami)
     cp Assets/bashrc ~/.bashrc
 fi
+
+echo "CHANGING LAYOUT"
+echo ================
+setxkbmap -layout $keyboard_layout
+echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
 
 echo "FIREFOX PLUGINS"
 echo =================
