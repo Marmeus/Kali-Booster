@@ -325,28 +325,29 @@ if [[ $tools == "true" ]]; then
     pip3 install -q -r /opt/impacket/requirements.txt 2>&1 >/dev/null
     cd /opt/impacket/ && sudo python3 ./setup.py install 2>&1 >/dev/null
     
-    echo Installing Volatility 2...
-    sudo apt-get -qq install yara python2.7-dev -y
-    sudo git clone -q https://github.com/volatilityfoundation/volatility.git /opt/volatility
-    cd /opt/volatility
-    sudo python setup.py install 2>&1 >/dev/null
-    echo Volatility 2: distorm plugin...
-    sudo git clone -q https://github.com/gdabah/distorm.git
-    cd distorm
-    sudo python2.7 setup.py build install 2>&1 >/dev/null
-    echo Volatility 2: pycrypto  plugin...
-    wget -q https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
-    tar -xvzf pycrypto-2.6.1.tar.gz >/dev/null
-    cd pycrypto-2.6.1
-    sudo python2.7 setup.py build install 2>&1 >/dev/null
-    
-    
-    echo Installing Volatility 3
-    sudo git clone -q  https://github.com/volatilityfoundation/volatility3.git /opt/volatility3
-    cd /opt/volatility3
-    sudo python3 setup.py build 2>&1 >/dev/null
-    sudo python3 setup.py install 2>&1 >/dev/null
-    sudo pip3 install -q -r requirements.txt 2>&1 >/dev/null
+    #echo Installing Volatility 2...
+    #sudo apt-get -qq install yara python2.7-dev -y
+    #sudo git clone -q https://github.com/volatilityfoundation/volatility.git /opt/volatility
+    #cd /opt/volatility
+    #sudo python setup.py install 2>&1 >/dev/null
+    #echo Volatility 2: distorm plugin...
+    #sudo git clone -q https://github.com/gdabah/distorm.git
+    #cd distorm
+    #sudo python2.7 setup.py build install 2>&1 >/dev/null
+    #echo Volatility 2: pycrypto  plugin...
+    #wget -q https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
+    #tar -xvzf pycrypto-2.6.1.tar.gz >/dev/null
+    #cd pycrypto-2.6.1
+    #sudo python2.7 setup.py build install 2>&1 >/dev/null
+    #   
+    #   
+    #echo Installing Volatility 3
+    #sudo git clone -q  https://github.com/volatilityfoundation/volatility3.git /opt/volatility3
+    #cd /opt/volatility3
+    #sudo python3 setup.py build 2>&1 >/dev/null
+    #sudo python3 setup.py install 2>&1 >/dev/null
+    #sudo pip3 install -q -r requirements.txt 2>&1 >/dev/null
+
     
     echo Installing JWT_TOOL...
     sudo git clone -q https://github.com/ticarpi/jwt_tool /opt/jwt_tool
