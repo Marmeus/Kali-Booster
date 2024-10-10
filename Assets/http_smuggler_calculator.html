@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chunk Calculator</title>
+    <style>body {font-family: sans-serif;}</style>
+</head>
+
+<body>
+    <h1>Chunk Calculator</h1>
+    <h2>By: <a href='https://twitter.com/takito1812'>Takito</a></h2>
+    <textarea rows="10" cols="50" name="chunk" onkeyup="calc()" autofocus>
+</textarea>
+    <p>The chunk size is <strong id="size"></strong></p>
+    <pre id="explanation"></pre>
+    <script>
+        function calc() {
+            var chunk = document.getElementsByName("chunk")[0].value;
+            var lines = chunk.split("\n");
+            var linesLength = lines.length;
+            var chars = 0;
+            var explanation = document.getElementById("explanation");
+            explanation.innerHTML = "";
+            for (var i = 0; i < linesLength; i++) {
+                var line = lines[i];
+                var lineLength = line.length;
+                chars += lineLength;
+                if (i < linesLength - 1) {
+                    chars += 2;
+                    explanation.innerHTML += line + " -> " + lineLength + " + 2 (\\r\\n) = " + (lineLength + 2) + " chars<br>";
+                } else {
+                    explanation.innerHTML += line + " -> " + lineLength + " chars<br>";
+                }
+            }
+            document.getElementById("size").innerHTML = chars.toString(16) + " hex (" + chars + " chars)";
+        }
+    </script>
+</body>
+
+</html>
