@@ -237,6 +237,7 @@ sudo gzip -d rockyou.txt.gz
 
 
 if [[ $wordlists == "true" ]]; then
+    WORDLIST_PATH=/usr/share/wordlists/Marmeus/
     echo Adding .git to directory-list-2.3-medium.txt
     sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
     
@@ -251,18 +252,29 @@ if [[ $wordlists == "true" ]]; then
     
     echo Kerberos Users List 
     sudo git clone -q https://github.com/attackdebris/kerberos_enum_userlists /usr/share/wordlists/kerberos_enum_userlists
-    
-    echo SQLi Auth Bypass - Master List
-    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/SQLi_Auth_Bypass-Master_List.txt /usr/share/wordlists/SQLi_Auth_Bypass-Master_List.txt
 
-    echo Windows file names
-    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/windows_files.txt /usr/share/wordlists/windows_files.txt
+    sudo mkdir $WORDLIST_PATH
 
-    echo Filename extension list 
-    sudo wget https://gist.githubusercontent.com/securifera/e7eed730cbe1ce43d0c29d7cd2d582f4/raw/908a7934ca448f389275432514eaa157def9c385/Filename%2520extension%2520list -O /usr/share/wordlists/filename_extension_list.txt
-    
-    echo JWT Secrets
-    sudo wget https://raw.githubusercontent.com/wallarm/jwt-secrets/master/jwt.secrets.list -O /usr/share/wordlists/jwt_secrets.txt
+    echo Movin SQLi Auth Bypass - Master List
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/SQLi $WORDLIST_PATH
+
+    echo Moving XSS Payloads
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/XSS $WORDLIST_PATH
+
+    echo Moving LFI payloads
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/LFI $WORDLIST_PATH
+
+    echo Moving RCE payloads
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/RCE $WORDLIST_PATH
+
+    echo Moving Open Redirect payloads
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/Open_redirect.txt $WORDLIST_PATH
+
+    echo Moving Filename extensions
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/Filename_extensions.txt $WORDLIST_PATH
+
+    echo Moving JWT secrets list
+    sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/JWT_secrets.txt $WORDLIST_PATH
 fi
 
 echo "HACK FONT"
