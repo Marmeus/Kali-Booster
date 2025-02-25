@@ -438,6 +438,7 @@ echo Adding hashcat rules
 echo ====================
 sudo mkdir /opt/HashcatRules/
 sudo wget -q https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
+sudo wget -q https://raw.githubusercontent.com/kaonashi-passwords/Kaonashi/refs/heads/master/masks/kaonashi.hcmask -O /opt/HashcatRules/kaonashi.hcmask
 
 
 echo ######################################################################
