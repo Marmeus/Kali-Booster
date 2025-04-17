@@ -33,7 +33,7 @@ Changes the default Kali-Linux wallpaper but the one stored at `./Wallpaper.png`
 
 Install the [Hack](https://github.com/source-foundry/Hack) font on the system.
 
-# New Aliases
+## New Aliases
 Sometimes you are tired of executing the same long command over and over this is why I created the following aliases.
 -  **mkcd**: Creates and accesses the directory.
 -  **sttysize**: Sends to your clipboard the command `stty rows X columns Y` with the correct rows and columns for your full TTY shell. 
@@ -51,7 +51,7 @@ Sometimes you are tired of executing the same long command over and over this is
 -  **portsDepth**: Scan the specified ports to the specified IPs.
 -  **vulns**: Run the vulns Nmap scripts against the specified hosts.
 
-# New Wordlists
+## New Wordlists
 
 -  [TopDomains](https://github.com/rbsec/dnscan)
 -  [SecLists](https://github.com/danielmiessler/SecLists)
@@ -59,11 +59,12 @@ Sometimes you are tired of executing the same long command over and over this is
 -  Adds `.git` to `directory-list-2.3-medium.txt`
 -  SQLi Auth Bypass - Master List
 
-# Hashcat Rules
+## Hashcat Rules
 Added hashcat rules at `/opt/HashcatRules/`
 - OneRuleToRuleThemAll
 
-# Tools
+## Tools
+
 - [FFUZ](https://github.com/ffuf/ffuf/)
 - [Impacket](https://github.com/ffuf/ffuf)
 - [Volatility2](https://github.com/volatilityfoundation/volatility) aka. `vol.py`
@@ -76,17 +77,17 @@ Added hashcat rules at `/opt/HashcatRules/`
 - [EVIL-WINRM](https://github.com/Hackplayers/evil-winrm)
 - [GIT-DUMPER](https://github.com/arthaud/git-dumper)
 
-# Firefox plugins
-- [Foxy-Proxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/) & add proxies
+## Firefox plugins & bookmarks
+- [Foxy-Proxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/) & the proxies are stored at `Assets/FoxyProxy.json`
 - [Wappalyzer](https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/)
 - [User-Agent editor](https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/)
 - [Cookie-Editor](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/)
 - [Firefox Multi-Account Containers](https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/)
 
-# Custom Scripts
+## Custom Scripts
 Some useful scripts are downloaded to `~/Scripts`.
 
-- **checkSMBPermissions**: Checks the permissions of each SMB disk share because tools like smbmap can sometimes through false positives.
+- **checkSMBPermissions.sh**: Checks the permissions of each SMB disk share because tools like smbmap can sometimes through false positives.
 
   ```bash
   kali@kali:~/Documents/Scripts$ ./checkSMBPermissions.sh <DOMAIN\\USER> <PASSWORD> <IP>
@@ -137,7 +138,7 @@ kali@kali:~/Documents/Scripts$ tree /tmp/massScan/
 
 * **403bypasser_installer.sh** & **403bypasser.sh**: A simple script that executes several 403 forbidden bypass tools for a given URL.
 
-# Utilities
+## Utilities
 
 Interesting files at `~/UTILS/` that might be usefull during an attack.
 
@@ -157,11 +158,11 @@ Interesting files at `~/UTILS/` that might be usefull during an attack.
 - Invoke-Kerberoast.ps1
 - Malicous images with PHP code. **Made by**: [x4v1l0k](https://twitter.com/x4v1l0k)
 
-# Changes kali behaviour
+## Changes kali behaviour
 - Doesn't lock screen or suspend the machine.
 - Configure proxychains
 
-# Brought back
+## Brought back
 - Default old kali linux `.bashrc`
 - Changes the shell to bash.
 - Pip2

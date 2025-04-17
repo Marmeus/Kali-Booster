@@ -125,6 +125,13 @@ echo ================
 setxkbmap -layout $keyboard_layout
 echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
 
+echo "FIREFOX BOOKMARKS"
+echo ==================
+if [[ ! $bookmark_links == "" ]]; then
+    echo Adding bookmarks...
+    bash add_bookmarks.sh "$bookmark_links"
+fi
+
 echo "FIREFOX PLUGINS"
 echo =================
 if [[ $firefox_plugins == "true" ]]; then
@@ -138,13 +145,6 @@ if [[ $firefox_plugins == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/onetab/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
-    
-    echo Configuring foxyproxy
-    temp=$(grep -iR 0mphhjoh ~/.mozilla/firefox 2>&1 | grep moz-extension | cut -d' ' -f 2)
-    sqliteFile=${temp::-1}
-    cp $KALI_BOOSTER_PATH/Assets/burp.sqlite $sqliteFile
-    dbOrigin=$(echo $sqliteFile | cut -d'+' -f 4 | cut -d'/' -f 1)
-    sqlite3 $sqliteFile "update database set origin = 'moz-extension://$dbOrigin';"
 fi
 
 echo "KALI ICONS"
