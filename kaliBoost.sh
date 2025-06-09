@@ -87,6 +87,19 @@ set-option -g history-limit 30000
 set -g status-right-length 100
 set -g status-right "#[fg=colour255,bg=colour000] #(ip -o -4 add show dev tun0 2>/dev/null |  awk {'print $4'} | cut -f1 -d/) #[fg=colour000,bg=colour11] #(hostname -I | awk '{print $1}') #[fg=colour255,bg=colour1] #H  #[fg=colour0,bg=colour25] %H:%M |#[fg=colour255] %d/%m/%Y "
 EOF
+
+# Modify hiustory to avoid duplicates and to store all the commands executed in any pannel
+cat << 'EOF' >> ~/.bashrc
+
+# Avoid duplicates
+HISTCONTROL=ignoredups:erasedups # Ubuntu default is ignoreboth
+# When the shell exits, append to the history file instead of overwriting it
+shopt -s histappend  # In Ubuntu this is already set by default
+
+# After each command, append to the history file and reread it
+PROMPT_COMMAND="\${PROMPT_COMMAND:+\$PROMPT_COMMAND\$'\n'}history -a; history -c; history -r"
+EOF
+
 fi
 
 
