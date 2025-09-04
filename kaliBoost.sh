@@ -14,7 +14,7 @@ if [[ $upgrade_system == "true" ]];then
     echo THIS WILL TAKE A LOT OF TIME :D
     sudo apt-get -qq dist-upgrade -y
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "Installing Tools"
@@ -23,7 +23,7 @@ if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
     sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3-venv -y 
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "Installing VM requirements"
@@ -37,7 +37,7 @@ elif [[ $vm == "VMWare" ]]; then
     # Share folders mount at boot time: 
     echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "Installing PIP"
@@ -57,7 +57,7 @@ if [[ $install_pip2 == "true" ]]; then
     # For kirbi2john.py
     pip2 install -q pyasn1
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 
@@ -74,7 +74,7 @@ if [[ $disable_ping_reply == "true" ]]; then
     sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
     sudo sysctl -p
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo ".VIMRC"
@@ -91,7 +91,7 @@ cat << EOF > ~/.vimrc
 :autocmd FileType * retab
 EOF
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo ".tmux.conf"
@@ -117,7 +117,7 @@ PROMPT_COMMAND="\${PROMPT_COMMAND:+\$PROMPT_COMMAND\$'\n'}history -a; history -c
 EOF
 
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 
@@ -170,7 +170,7 @@ if [[ $firefox_plugins == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/onetab/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "FIREFOX BOOKMARKS"
@@ -179,7 +179,7 @@ if [[ ! $bookmark_links == "" ]]; then
     echo Adding bookmarks...
     bash add_bookmarks.sh "$bookmark_links"
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "KALI ICONS"
@@ -242,7 +242,7 @@ if [[ $aliases_2_bashrc == "true" ]]; then
     echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
     echo 'alias fixVBox="sudo killall -HUP VBoxClient; VBoxClient --clipboard; VBoxClient --draganddrop; VBoxClient --seamless; VBoxClient --vmsvga"' >> ~/.bashrc
 else
-    echo Nope
+    echo Nope\n\n
 fi
 echo 
 
@@ -255,7 +255,7 @@ if [[ ! $thm_vpn_path == "" ]]; then
     echo "alias thm=\"sudo openvpn $thm_vpn_path\"" >> ~/.bashrc
     
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "HTB"
@@ -266,7 +266,7 @@ if [[ ! $htb_vpn_path == "" ]]; then
     ln -s $(dirname $htb_vpn_path) ~/Documents/HTB
     echo "alias htb=\"sudo openvpn $htb_vpn_path\"" >> ~/.bashrc
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "WORDLISTS"
@@ -317,7 +317,7 @@ if [[ $wordlists == "true" ]]; then
     echo Moving JWT secrets list
     sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/JWT_secrets.txt $WORDLIST_PATH
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "HACK FONT"
@@ -448,7 +448,7 @@ if [[ $tools == "true" ]]; then
     sudo apt-get -qq update
     sudo apt-get -qq install code -y 
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo "UTILITIES"
@@ -479,7 +479,7 @@ if [[ ! $utilities_path == "" ]]; then
     wget -q https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O Invoke-Rubeus.ps1
     wget -q https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O Invoke-Kerberoast.ps1
 else
-    echo Nope
+    echo Nope\n\n
 fi
 
 echo Adding hashcat rules
