@@ -5,20 +5,31 @@ KALI_BOOSTER_PATH=$(pwd)
 echo "SYSTEM PACKAGES"
 echo =================
 echo Updating package repositories...´
-echo THIS WILL TAKE A LOT OF TIME :D
 sudo apt-get -qq update >/dev/null
+echo 
+
+echo "Upgrading system..."
+echo "-------------------"
 if [[ $upgrade_system == "true" ]];then
-    echo "Upgrading system..."
+    echo THIS WILL TAKE A LOT OF TIME :D
     sudo apt-get -qq dist-upgrade -y
 fi
+else
+    echo Nope
+fi
 
+echo "Installing Tools"
+echo "----------------"
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
     sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3-venv -y 
 fi
+else
+    echo Nope
+fi
 
 echo "Installing VM requirements"
-echo ============================
+echo "--------------------------"
 if [[ $vm == "VBox" ]]; then
     sudo apt-get -qq install virtualbox-guest-utils -y 
     vboxsf=$(grep vboxsf /etc/group | cut -d ':' -f 3)
@@ -28,11 +39,11 @@ elif [[ $vm == "VMWare" ]]; then
     # Share folders mount at boot time: 
     echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
 else
-    echo
+    echo Nope
 fi
 
-echo "INSTALLING PIP"
-echo  ==============
+echo "Installing PIP"
+echo "--------------"
 if [[ $install_pip2 == "true" ]]; then
     echo Uninstalling pip3...
     sudo pip uninstall pip >/dev/null
@@ -45,10 +56,14 @@ if [[ $install_pip2 == "true" ]]; then
     echo Check correct installation
     pip2 -V
     pip3 -V
+    # For kirbi2john.py
+    pip2 install -q pyasn1
+fi
+else
+    echo Nope
 fi
 
-# For kirbi2john.py
-pip2 install -q pyasn1
+
 
 
 # Configurar el teclado
@@ -61,7 +76,10 @@ if [[ $disable_ping_reply == "true" ]]; then
     echo Ping reply disabled
     sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
     sudo sysctl -p
-fi 
+fi
+else
+    echo Nope
+fi
 
 echo ".VIMRC"
 echo ========
@@ -76,6 +94,9 @@ cat << EOF > ~/.vimrc
 :noremap Zo <c-w>=
 :autocmd FileType * retab
 EOF
+fi
+else
+    echo Nope
 fi
 
 echo ".tmux.conf"
@@ -100,6 +121,9 @@ shopt -s histappend  # In Ubuntu this is already set by default
 PROMPT_COMMAND="\${PROMPT_COMMAND:+\$PROMPT_COMMAND\$'\n'}history -a; history -c; history -r"
 EOF
 
+fi
+else
+    echo Nope
 fi
 
 
@@ -133,17 +157,10 @@ if [[ $terminal=="bash" ]]; then
     cp Assets/bashrc ~/.bashrc
 fi
 
-echo "CHANGING LAYOUT"
+echo "Changing layout"
 echo ================
 setxkbmap -layout $keyboard_layout
 echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
-
-echo "FIREFOX BOOKMARKS"
-echo ==================
-if [[ ! $bookmark_links == "" ]]; then
-    echo Adding bookmarks...
-    bash add_bookmarks.sh "$bookmark_links"
-fi
 
 echo "FIREFOX PLUGINS"
 echo =================
@@ -158,6 +175,19 @@ if [[ $firefox_plugins == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/onetab/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
+fi
+else
+    echo Nope
+fi
+
+echo "FIREFOX BOOKMARKS"
+echo ==================
+if [[ ! $bookmark_links == "" ]]; then
+    echo Adding bookmarks...
+    bash add_bookmarks.sh "$bookmark_links"
+fi
+else
+    echo Nope
 fi
 
 echo "KALI ICONS"
@@ -220,6 +250,9 @@ if [[ $aliases_2_bashrc == "true" ]]; then
     echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
     echo 'alias fixVBox="sudo killall -HUP VBoxClient; VBoxClient --clipboard; VBoxClient --draganddrop; VBoxClient --seamless; VBoxClient --vmsvga"' >> ~/.bashrc
 fi
+else
+    echo Nope
+fi
 echo 
 
 echo "THM"
@@ -231,6 +264,9 @@ if [[ ! $thm_vpn_path == "" ]]; then
     echo "alias thm=\"sudo openvpn $thm_vpn_path\"" >> ~/.bashrc
     
 fi
+else
+    echo Nope
+fi
 
 echo "HTB"
 echo =====
@@ -240,7 +276,9 @@ if [[ ! $htb_vpn_path == "" ]]; then
     ln -s $(dirname $htb_vpn_path) ~/Documents/HTB
     echo "alias htb=\"sudo openvpn $htb_vpn_path\"" >> ~/.bashrc
 fi
-
+else
+    echo Nope
+fi
 
 echo "WORDLISTS"
 echo ===========
@@ -248,7 +286,8 @@ echo Unzipping rockyou...
 cd /usr/share/wordlists/
 sudo gzip -d rockyou.txt.gz
 
-
+echo "Adding more wordlists"
+echo "---------------------"
 if [[ $wordlists == "true" ]]; then
     WORDLIST_PATH=/usr/share/wordlists/Marmeus/
     echo Adding .git to directory-list-2.3-medium.txt
@@ -288,6 +327,9 @@ if [[ $wordlists == "true" ]]; then
 
     echo Moving JWT secrets list
     sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/JWT_secrets.txt $WORDLIST_PATH
+fi
+else
+    echo Nope
 fi
 
 echo "HACK FONT"
@@ -418,6 +460,9 @@ if [[ $tools == "true" ]]; then
     sudo apt-get -qq update
     sudo apt-get -qq install code -y 
 fi
+else
+    echo Nope
+fi
 
 echo "UTILITIES"
 echo ===========
@@ -446,6 +491,9 @@ if [[ ! $utilities_path == "" ]]; then
     wget -q https://download.sysinternals.com/files/AccessChk.zip -O AccessChk.zip
     wget -q https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O Invoke-Rubeus.ps1
     wget -q https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O Invoke-Kerberoast.ps1
+fi
+else
+    echo Nope
 fi
 
 echo Adding hashcat rules
