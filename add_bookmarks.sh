@@ -56,7 +56,7 @@ EOF
     PLACE_ID=$(sqlite3 "$DB" "SELECT id FROM moz_places WHERE url = '$BOOKMARK_URL';" | head -n 1)
 
     if [[ -z "$PLACE_ID" ]]; then
-        echo "❌ Failed to get place_id for $BOOKMARK_URL"
+        echo "[X] Failed to get place_id for $BOOKMARK_URL"
         continue
     fi
 
@@ -74,5 +74,5 @@ EOF
     );
 EOF
 
-    echo "✅ Added: $BOOKMARK_URL"
+    echo "[+] Added: $BOOKMARK_URL"
 done

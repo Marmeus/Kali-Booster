@@ -4,21 +4,30 @@ KALI_BOOSTER_PATH=$(pwd)
 
 echo "SYSTEM PACKAGES"
 echo =================
-echo Updating package repositories...´
-echo THIS WILL TAKE A LOT OF TIME :D
+echo -e "Updating package repositories... (Needed by default)"
 sudo apt-get -qq update >/dev/null
+echo 
+
+echo -e "\nUpgrading system..."
+echo      "-------------------"
 if [[ $upgrade_system == "true" ]];then
-    echo "Upgrading system..."
+    echo THIS WILL TAKE A LOT OF TIME :D
     sudo apt-get -qq dist-upgrade -y
+else
+    echo -e Nope\\n\\n
 fi
 
+echo -e "\nInstalling Tools"
+echo      "----------------"
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
     sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3-venv -y 
+else
+    echo -e Nope\\n\\n
 fi
 
-echo "Installing VM requirements"
-echo ============================
+echo -e "\nInstalling VM requirements" -e
+echo "--------------------------"
 if [[ $vm == "VBox" ]]; then
     sudo apt-get -qq install virtualbox-guest-utils -y 
     vboxsf=$(grep vboxsf /etc/group | cut -d ':' -f 3)
@@ -28,11 +37,11 @@ elif [[ $vm == "VMWare" ]]; then
     # Share folders mount at boot time: 
     echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
 else
-    echo
+    echo -e Nope\\n\\n
 fi
 
-echo "INSTALLING PIP"
-echo  ==============
+echo -e "\nInstalling PIP"
+echo      "--------------"
 if [[ $install_pip2 == "true" ]]; then
     echo Uninstalling pip3...
     sudo pip uninstall pip >/dev/null
@@ -45,26 +54,31 @@ if [[ $install_pip2 == "true" ]]; then
     echo Check correct installation
     pip2 -V
     pip3 -V
+    # For kirbi2john.py
+    pip2 install -q pyasn1
+else
+    echo -e Nope\\n\\n
 fi
 
-# For kirbi2john.py
-pip2 install -q pyasn1
+
 
 
 # Configurar el teclado
 # echo Configurando el teclado...
 # sudo dpkg-reconfigure keyboard-configuration
 
-echo "PING REPLY"
-echo ============
+echo -e "\nPING REPLY"
+echo      ============
 if [[ $disable_ping_reply == "true" ]]; then
     echo Ping reply disabled
     sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
     sudo sysctl -p
-fi 
+else
+    echo -e Nope\\n\\n
+fi
 
-echo ".VIMRC"
-echo ========
+echo -e "\n.VIMRC"
+echo      ========
 if [[ $add_vim_conf == "true" ]]; then
 echo Changing .vimrc
 cat << EOF > ~/.vimrc
@@ -76,10 +90,12 @@ cat << EOF > ~/.vimrc
 :noremap Zo <c-w>=
 :autocmd FileType * retab
 EOF
+else
+    echo -e Nope\\n\\n
 fi
 
-echo ".tmux.conf"
-echo ============
+echo -e "\n.tmux.conf"
+echo      ============
 if [[ $add_tmux_conf == "true" ]]; then
 echo changing .tmux.conf
 cat << EOF > ~/.tmux.conf
@@ -100,11 +116,13 @@ shopt -s histappend  # In Ubuntu this is already set by default
 PROMPT_COMMAND="\${PROMPT_COMMAND:+\$PROMPT_COMMAND\$'\n'}history -a; history -c; history -r"
 EOF
 
+else
+    echo -e Nope\\n\\n
 fi
 
 
-echo "Changing user power management"
-echo ================================
+echo -e "\nChanging user power management"
+echo      ================================
 cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -126,30 +144,25 @@ echo "Adding proxychains"
 echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf 
 
 
-echo Overwritting .bashrc
-echo ====================
+echo -e "\n Overwritting .bashrc"
+echo        ====================
 if [[ $terminal=="bash" ]]; then
     sudo chsh -s /bin/bash $(whoami)
     cp Assets/bashrc ~/.bashrc
 fi
 
-echo "CHANGING LAYOUT"
+echo -e "\nChanging layout"
 echo ================
 setxkbmap -layout $keyboard_layout
 echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
 
-echo "FIREFOX BOOKMARKS"
-echo ==================
-if [[ ! $bookmark_links == "" ]]; then
-    echo Adding bookmarks...
-    bash add_bookmarks.sh "$bookmark_links"
-fi
-
-echo "FIREFOX PLUGINS"
-echo =================
-if [[ $firefox_plugins == "true" ]]; then
-    echo Installing Firefox plugins: foxyproxy, cookie-editor, user-agent, wappalyzer, onetab
+echo -e "\nFIREFOX"
+echo      =========
+if [[ $upgrade_firefox == "true" ]]; then
+    echo "Installing Firefox"
+    echo "------------------"
     echo NOTE: CLOSE FIREFOX ONCE THE THE PLUGINS HAVE BEEN INSTALED
+    echo "Downloading: foxyproxy, cookie-editor, user-agent, wappalyzer, onetab"
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/user-agent-string-switcher/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
@@ -158,10 +171,23 @@ if [[ $firefox_plugins == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/onetab/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
+
+    echo -e "\nAdding bookmarks"
+    echo      "----------------"
+    if [[ ! $bookmark_links == "" ]]; then
+        echo Adding bookmarks...
+        bash add_bookmarks.sh "$bookmark_links"
+    else
+        echo -e Nope\\n\\n
+    fi
+else
+    echo -e Nope\\n\\n
 fi
 
-echo "KALI ICONS"
-echo ===========  
+
+
+echo -e "\nKALI ICONS"
+echo      ============  
 cp ./Assets/BurpPro.png ~/Pictures/
 cd $KALI_BOOSTER_PATH
 if [[ $wallpaper == "./Assets/"* ]]; then
@@ -190,21 +216,21 @@ else
     cp "$icon_panel_menu" ~/Pictures/button-icon.png
 fi
 
-echo "Adding MIBS to snmp"
-echo =====================
-sudo apt-get -qq install snmp-mibs-downloader -y
+echo -e "\nAdding MIBS to snmp"
+echo      =====================
+sudo apt-get -qq install snmp-mibs-downloader -y > /dev/null 2>&1
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
 echo "" | sudo tee /etc/snmp/snmp.conf
 
 
-echo "SCRIPTS"
-echo =========
+echo -e "\nSCRIPTS"
+echo      =========
 echo "Adding Scripts to ~/Scripts"
 mv ./Assets/Scripts/ ~/Scripts/
 
 
-echo "ALIASES 2 BASHRC"
-echo =========
+echo -e "\nALIASES 2 BASHRC"
+echo      ==================
 if [[ $aliases_2_bashrc == "true" ]]; then
     echo  Adding aliases...
     echo 'mkcd (){ mkdir -p -- "$1" &&    cd -P -- "$1"; }' >> ~/.bashrc
@@ -219,36 +245,42 @@ if [[ $aliases_2_bashrc == "true" ]]; then
     echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.bashrc
     echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
     echo 'alias fixVBox="sudo killall -HUP VBoxClient; VBoxClient --clipboard; VBoxClient --draganddrop; VBoxClient --seamless; VBoxClient --vmsvga"' >> ~/.bashrc
+else
+    echo -e Nope\\n\\n
 fi
 echo 
 
-echo "THM"
-echo =====
+echo -e "\nTHM"
+echo      =====
 if [[ ! $thm_vpn_path == "" ]]; then
     echo Setting VPN...
     mkdir ~/Documents/THM
     ln -s $(dirname $thm_vpn_path) ~/Documents/THM
     echo "alias thm=\"sudo openvpn $thm_vpn_path\"" >> ~/.bashrc
     
+else
+    echo -e Nope\\n\\n
 fi
 
-echo "HTB"
-echo =====
+echo -e "\nHTB"
+echo      =====
 if [[ ! $htb_vpn_path == "" ]]; then
     echo Setting VPN...
     mkdir ~/Documents/HTB
     ln -s $(dirname $htb_vpn_path) ~/Documents/HTB
     echo "alias htb=\"sudo openvpn $htb_vpn_path\"" >> ~/.bashrc
+else
+    echo -e Nope\\n\\n
 fi
 
-
-echo "WORDLISTS"
-echo ===========
+echo -e "\nWORDLISTS"
+echo      ===========
 echo Unzipping rockyou...
 cd /usr/share/wordlists/
 sudo gzip -d rockyou.txt.gz
 
-
+echo -e "\nAdding more wordlists"
+echo      "---------------------"
 if [[ $wordlists == "true" ]]; then
     WORDLIST_PATH=/usr/share/wordlists/Marmeus/
     echo Adding .git to directory-list-2.3-medium.txt
@@ -288,18 +320,20 @@ if [[ $wordlists == "true" ]]; then
 
     echo Moving JWT secrets list
     sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/JWT_secrets.txt $WORDLIST_PATH
+else
+    echo -e Nope\\n\\n
 fi
 
-echo "HACK FONT"
-echo ===========
+echo -e "\nHACK FONT"
+echo      ===========
 echo Installing Hack font...
 cd /tmp/
 wget -q https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip -O Hack-font.zip
 unzip Hack-font.zip >/dev/null
 sudo mv ttf/ /usr/share/fonts/
 
-echo "TOOLS"
-echo =======
+echo -e "\nTOOLS"
+echo      =======
 
 if [[ $tools == "true" ]]; then
     mkdir -p ~/Tools/Web/
@@ -411,22 +445,25 @@ if [[ $tools == "true" ]]; then
     echo Installing VS CODE...
     cd /tmp
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+    sudo install -o root -g root -m 755 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
     sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
     rm -f packages.microsoft.gpg
     sudo apt-get -qq install apt-transport-https
     sudo apt-get -qq update
     sudo apt-get -qq install code -y 
+else
+    echo -e Nope\\n\\n
 fi
 
-echo "UTILITIES"
-echo ===========
+echo -e "\nUTILITIES"
+echo      ===========
 if [[ ! $utilities_path == "" ]]; then
     cd $KALI_BOOSTER_PATH
     echo Populating utilities at $utilities_path
     mkdir $utilities_path
     cp -r ./Assets/MaliciousImages/ ~/Pictures/
-    cp -r ./Assets/multi_encoder.html $utilities_path
+    unzip -o -P "Documents" -d "~/Documents/" ./Assets/Documents.zip
+    cp -r ./Assets/HTMLs ~/.
     cd $utilities_path
     wget -q https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O LinEnum.sh
     wget -q https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O linpeas.sh
@@ -445,10 +482,12 @@ if [[ ! $utilities_path == "" ]]; then
     wget -q https://download.sysinternals.com/files/AccessChk.zip -O AccessChk.zip
     wget -q https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O Invoke-Rubeus.ps1
     wget -q https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O Invoke-Kerberoast.ps1
+else
+    echo -e Nope\\n\\n
 fi
 
-echo Adding hashcat rules
-echo ====================
+echo -e "\nHASHCATR RULES"
+echo      ================
 sudo mkdir /opt/HashcatRules/
 sudo wget -q https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
 sudo wget -q https://raw.githubusercontent.com/kaonashi-passwords/Kaonashi/refs/heads/master/masks/kaonashi.hcmask -O /opt/HashcatRules/kaonashi.hcmask

