@@ -13,7 +13,6 @@ echo "-------------------"
 if [[ $upgrade_system == "true" ]];then
     echo THIS WILL TAKE A LOT OF TIME :D
     sudo apt-get -qq dist-upgrade -y
-fi
 else
     echo Nope
 fi
@@ -23,7 +22,6 @@ echo "----------------"
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
     sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3-venv -y 
-fi
 else
     echo Nope
 fi
@@ -58,7 +56,6 @@ if [[ $install_pip2 == "true" ]]; then
     pip3 -V
     # For kirbi2john.py
     pip2 install -q pyasn1
-fi
 else
     echo Nope
 fi
@@ -76,7 +73,6 @@ if [[ $disable_ping_reply == "true" ]]; then
     echo Ping reply disabled
     sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
     sudo sysctl -p
-fi
 else
     echo Nope
 fi
@@ -94,7 +90,6 @@ cat << EOF > ~/.vimrc
 :noremap Zo <c-w>=
 :autocmd FileType * retab
 EOF
-fi
 else
     echo Nope
 fi
@@ -121,7 +116,6 @@ shopt -s histappend  # In Ubuntu this is already set by default
 PROMPT_COMMAND="\${PROMPT_COMMAND:+\$PROMPT_COMMAND\$'\n'}history -a; history -c; history -r"
 EOF
 
-fi
 else
     echo Nope
 fi
@@ -175,7 +169,6 @@ if [[ $firefox_plugins == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/onetab/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
-fi
 else
     echo Nope
 fi
@@ -185,7 +178,6 @@ echo ==================
 if [[ ! $bookmark_links == "" ]]; then
     echo Adding bookmarks...
     bash add_bookmarks.sh "$bookmark_links"
-fi
 else
     echo Nope
 fi
@@ -249,7 +241,6 @@ if [[ $aliases_2_bashrc == "true" ]]; then
     echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.bashrc
     echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
     echo 'alias fixVBox="sudo killall -HUP VBoxClient; VBoxClient --clipboard; VBoxClient --draganddrop; VBoxClient --seamless; VBoxClient --vmsvga"' >> ~/.bashrc
-fi
 else
     echo Nope
 fi
@@ -263,7 +254,6 @@ if [[ ! $thm_vpn_path == "" ]]; then
     ln -s $(dirname $thm_vpn_path) ~/Documents/THM
     echo "alias thm=\"sudo openvpn $thm_vpn_path\"" >> ~/.bashrc
     
-fi
 else
     echo Nope
 fi
@@ -275,7 +265,6 @@ if [[ ! $htb_vpn_path == "" ]]; then
     mkdir ~/Documents/HTB
     ln -s $(dirname $htb_vpn_path) ~/Documents/HTB
     echo "alias htb=\"sudo openvpn $htb_vpn_path\"" >> ~/.bashrc
-fi
 else
     echo Nope
 fi
@@ -327,7 +316,6 @@ if [[ $wordlists == "true" ]]; then
 
     echo Moving JWT secrets list
     sudo mv $KALI_BOOSTER_PATH/Assets/Wordlists/JWT_secrets.txt $WORDLIST_PATH
-fi
 else
     echo Nope
 fi
@@ -459,7 +447,6 @@ if [[ $tools == "true" ]]; then
     sudo apt-get -qq install apt-transport-https
     sudo apt-get -qq update
     sudo apt-get -qq install code -y 
-fi
 else
     echo Nope
 fi
@@ -491,7 +478,6 @@ if [[ ! $utilities_path == "" ]]; then
     wget -q https://download.sysinternals.com/files/AccessChk.zip -O AccessChk.zip
     wget -q https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1 -O Invoke-Rubeus.ps1
     wget -q https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 -O Invoke-Kerberoast.ps1
-fi
 else
     echo Nope
 fi
