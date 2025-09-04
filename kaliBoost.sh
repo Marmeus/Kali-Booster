@@ -4,12 +4,12 @@ KALI_BOOSTER_PATH=$(pwd)
 
 echo "SYSTEM PACKAGES"
 echo =================
-echo "Updating package repositories... (Needed by default)"
+echo -e "Updating package repositories... (Needed by default)"
 sudo apt-get -qq update >/dev/null
 echo 
 
-echo "Upgrading system..."
-echo "-------------------"
+echo -e "\nUpgrading system..."
+echo      "-------------------"
 if [[ $upgrade_system == "true" ]];then
     echo THIS WILL TAKE A LOT OF TIME :D
     sudo apt-get -qq dist-upgrade -y
@@ -17,8 +17,8 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo "Installing Tools"
-echo "----------------"
+echo -e "\nInstalling Tools"
+echo      "----------------"
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
     sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3-venv -y 
@@ -26,7 +26,7 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo "Installing VM requirements"
+echo -e "\nInstalling VM requirements" -e
 echo "--------------------------"
 if [[ $vm == "VBox" ]]; then
     sudo apt-get -qq install virtualbox-guest-utils -y 
@@ -40,8 +40,8 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo "Installing PIP"
-echo "--------------"
+echo -e "\nInstalling PIP"
+echo      "--------------"
 if [[ $install_pip2 == "true" ]]; then
     echo Uninstalling pip3...
     sudo pip uninstall pip >/dev/null
@@ -67,8 +67,8 @@ fi
 # echo Configurando el teclado...
 # sudo dpkg-reconfigure keyboard-configuration
 
-echo "PING REPLY"
-echo ============
+echo -e "\nPING REPLY"
+echo      ============
 if [[ $disable_ping_reply == "true" ]]; then
     echo Ping reply disabled
     sudo bash -c 'echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf'
@@ -77,8 +77,8 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo ".VIMRC"
-echo ========
+echo -e "\n.VIMRC"
+echo      ========
 if [[ $add_vim_conf == "true" ]]; then
 echo Changing .vimrc
 cat << EOF > ~/.vimrc
@@ -94,8 +94,8 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo ".tmux.conf"
-echo ============
+echo -e "\n.tmux.conf"
+echo      ============
 if [[ $add_tmux_conf == "true" ]]; then
 echo changing .tmux.conf
 cat << EOF > ~/.tmux.conf
@@ -121,8 +121,8 @@ else
 fi
 
 
-echo "Changing user power management"
-echo ================================
+echo -e "\nChanging user power management"
+echo      ================================
 cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -144,20 +144,20 @@ echo "Adding proxychains"
 echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf 
 
 
-echo Overwritting .bashrc
-echo ====================
+echo -e "\n Overwritting .bashrc"
+echo        ====================
 if [[ $terminal=="bash" ]]; then
     sudo chsh -s /bin/bash $(whoami)
     cp Assets/bashrc ~/.bashrc
 fi
 
-echo "Changing layout"
+echo -e "\nChanging layout"
 echo ================
 setxkbmap -layout $keyboard_layout
 echo "setxkbmap $keyboard_layout"  >> ~/.bashrc
 
-echo "FIREFOX"
-echo =================
+echo -e "\nFIREFOX"
+echo      =========
 if [[ $upgrade_firefox == "true" ]]; then
     echo "Installing Firefox"
     echo "------------------"
@@ -172,8 +172,8 @@ if [[ $upgrade_firefox == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/onetab/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
 
-    echo "Adding bookmarks"
-    echo "----------------"
+    echo -e "\nAdding bookmarks"
+    echo      "----------------"
     if [[ ! $bookmark_links == "" ]]; then
         echo Adding bookmarks...
         bash add_bookmarks.sh "$bookmark_links"
@@ -186,8 +186,8 @@ fi
 
 
 
-echo "KALI ICONS"
-echo ===========  
+echo -e "\nKALI ICONS"
+echo      ============  
 cp ./Assets/BurpPro.png ~/Pictures/
 cd $KALI_BOOSTER_PATH
 if [[ $wallpaper == "./Assets/"* ]]; then
@@ -216,21 +216,21 @@ else
     cp "$icon_panel_menu" ~/Pictures/button-icon.png
 fi
 
-echo "Adding MIBS to snmp"
-echo =====================
+echo -e "\nAdding MIBS to snmp"
+echo      =====================
 sudo apt-get -qq install snmp-mibs-downloader -y
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
 echo "" | sudo tee /etc/snmp/snmp.conf
 
 
-echo "SCRIPTS"
-echo =========
+echo -e "\nSCRIPTS"
+echo      =========
 echo "Adding Scripts to ~/Scripts"
 mv ./Assets/Scripts/ ~/Scripts/
 
 
-echo "ALIASES 2 BASHRC"
-echo =========
+echo -e "\nALIASES 2 BASHRC"
+echo      ==================
 if [[ $aliases_2_bashrc == "true" ]]; then
     echo  Adding aliases...
     echo 'mkcd (){ mkdir -p -- "$1" &&    cd -P -- "$1"; }' >> ~/.bashrc
@@ -250,8 +250,8 @@ else
 fi
 echo 
 
-echo "THM"
-echo =====
+echo -e "\nTHM"
+echo      =====
 if [[ ! $thm_vpn_path == "" ]]; then
     echo Setting VPN...
     mkdir ~/Documents/THM
@@ -262,8 +262,8 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo "HTB"
-echo =====
+echo -e "\nHTB"
+echo      =====
 if [[ ! $htb_vpn_path == "" ]]; then
     echo Setting VPN...
     mkdir ~/Documents/HTB
@@ -273,14 +273,14 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo "WORDLISTS"
-echo ===========
+echo -e "\nWORDLISTS"
+echo      ===========
 echo Unzipping rockyou...
 cd /usr/share/wordlists/
 sudo gzip -d rockyou.txt.gz
 
-echo "Adding more wordlists"
-echo "---------------------"
+echo -e "\nAdding more wordlists"
+echo      "---------------------"
 if [[ $wordlists == "true" ]]; then
     WORDLIST_PATH=/usr/share/wordlists/Marmeus/
     echo Adding .git to directory-list-2.3-medium.txt
@@ -324,16 +324,16 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo "HACK FONT"
-echo ===========
+echo -e "\nHACK FONT"
+echo      ===========
 echo Installing Hack font...
 cd /tmp/
 wget -q https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip -O Hack-font.zip
 unzip Hack-font.zip >/dev/null
 sudo mv ttf/ /usr/share/fonts/
 
-echo "TOOLS"
-echo =======
+echo -e "\nTOOLS"
+echo      =======
 
 if [[ $tools == "true" ]]; then
     mkdir -p ~/Tools/Web/
@@ -455,8 +455,8 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo "UTILITIES"
-echo ===========
+echo -e "\nUTILITIES"
+echo      ===========
 if [[ ! $utilities_path == "" ]]; then
     cd $KALI_BOOSTER_PATH
     echo Populating utilities at $utilities_path
@@ -486,8 +486,8 @@ else
     echo -e Nope\\n\\n
 fi
 
-echo Adding hashcat rules
-echo ====================
+echo -e "\nHASHCATR RULES"
+echo      ================
 sudo mkdir /opt/HashcatRules/
 sudo wget -q https://raw.githubusercontent.com/NotSoSecure/password_cracking_rules/master/OneRuleToRuleThemAll.rule -O /opt/HashcatRules/OneRuleToRuleThemAll.rule
 sudo wget -q https://raw.githubusercontent.com/kaonashi-passwords/Kaonashi/refs/heads/master/masks/kaonashi.hcmask -O /opt/HashcatRules/kaonashi.hcmask
