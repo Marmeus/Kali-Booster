@@ -218,7 +218,7 @@ fi
 
 echo -e "\nAdding MIBS to snmp"
 echo      =====================
-sudo apt-get -qq install snmp-mibs-downloader -y
+sudo apt-get -qq install snmp-mibs-downloader -y > /dev/null 2>&1
 sudo cp /etc/snmp/snmp.conf /etc/snmp/snmp.confBkp
 echo "" | sudo tee /etc/snmp/snmp.conf
 
