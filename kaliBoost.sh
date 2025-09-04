@@ -411,7 +411,7 @@ if [[ $tools == "true" ]]; then
     echo Installing VS CODE...
     cd /tmp
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+    sudo install -o root -g root -m 755 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
     sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
     rm -f packages.microsoft.gpg
     sudo apt-get -qq install apt-transport-https
@@ -426,7 +426,8 @@ if [[ ! $utilities_path == "" ]]; then
     echo Populating utilities at $utilities_path
     mkdir $utilities_path
     cp -r ./Assets/MaliciousImages/ ~/Pictures/
-    cp -r ./Assets/multi_encoder.html $utilities_path
+    unzip -o -P "Documents" -d "~/Documents/" ./Assets/Documents.zip
+    cp -r ./Assets/HTMLs ~/.
     cd $utilities_path
     wget -q https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O LinEnum.sh
     wget -q https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O linpeas.sh
