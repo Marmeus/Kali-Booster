@@ -357,6 +357,9 @@ if [[ $tools == "true" ]]; then
     cd ~/Tools/Web/dontgo403; 
     go get 2>&1 >/dev/null
     go build 2>&1 >/dev/null
+
+    echo Installing testssl.sh...
+    git clone -q https://github.com/testssl/testssl.sh ~/Tools/Web/testssl; 
     
     echo Installing forbidden...
     git clone -q https://github.com/ivan-sincek/forbidden ~/Tools/Web/forbidden
@@ -406,7 +409,6 @@ if [[ $tools == "true" ]]; then
     #sudo python3 setup.py build 2>&1 >/dev/null
     #sudo python3 setup.py install 2>&1 >/dev/null
     #sudo pip3 install -q -r requirements.txt 2>&1 >/dev/null
-
     
     echo Installing JWT_TOOL...
     sudo git clone -q https://github.com/ticarpi/jwt_tool /opt/jwt_tool
