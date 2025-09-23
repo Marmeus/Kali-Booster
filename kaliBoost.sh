@@ -245,6 +245,7 @@ if [[ $aliases_2_bashrc == "true" ]]; then
     echo 'alias vulns="sudo nmap --script vuln -n -T4 -oN VulnsPorts.txt -p"' >> ~/.bashrc
     echo 'certificatesDomain(){ echo | openssl s_client -connect $1:443  | openssl x509 -noout -text | grep DNS | sed "s/,/\n/g"; }' >> ~/.bashrc
     echo 'alias fixVBox="sudo killall -HUP VBoxClient; VBoxClient --clipboard; VBoxClient --draganddrop; VBoxClient --seamless; VBoxClient --vmsvga"' >> ~/.bashrc
+    echo 'alias venv="python3 -m venv venv; source venv/bin/activate"' >> ~/.bashrc
 else
     echo -e Nope\\n\\n
 fi
