@@ -288,7 +288,7 @@ if [[ $wordlists == "true" ]]; then
     sudo sed -i '1s/^/.git\n/' /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
     
     echo Downloading TOP domains
-    sudo git clone -q https://github.com/rbsec/dnscan.git /usr/share/wordlists/TopDomais
+    sudo git clone -q https://github.com/rbsec/dnscan.git /usr/share/wordlists/TopDomains
     
     echo Downloading SecLists
     sudo git clone -q https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
