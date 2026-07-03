@@ -207,6 +207,29 @@ if [[ $terminal=="bash" ]]; then
     cp Assets/bashrc ~/.bashrc
 fi
 
+echo -e "\nTERMINAL EMULATOR"
+echo      ===================
+mkdir -p ~/.config/xfce4/terminal/
+TERMINALRC=~/.config/xfce4/terminal/terminalrc
+[[ -f $TERMINALRC ]] || echo "[Configuration]" > $TERMINALRC
+
+set_terminal_pref() {
+    local key=$1 value=$2
+    if grep -q "^${key}=" "$TERMINALRC"; then
+        sed -i "s/^${key}=.*/${key}=${value}/" "$TERMINALRC"
+    else
+        echo "${key}=${value}" >> "$TERMINALRC"
+    fi
+}
+
+echo "Setting terminal font size to 14"
+set_terminal_pref FontUseSystemFont FALSE
+set_terminal_pref FontName "Monospace 14"
+
+echo "Disabling terminal transparency"
+set_terminal_pref BackgroundMode TERMINAL_BACKGROUND_SOLID
+set_terminal_pref BackgroundDarkness 1.000000
+
 echo -e "\nChanging layout"
 echo ================
 setxkbmap -layout $keyboard_layout
