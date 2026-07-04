@@ -209,26 +209,38 @@ fi
 
 echo -e "\nTERMINAL EMULATOR"
 echo      ===================
-mkdir -p ~/.config/xfce4/terminal/
-TERMINALRC=~/.config/xfce4/terminal/terminalrc
-[[ -f $TERMINALRC ]] || echo "[Configuration]" > $TERMINALRC
+# Kali's default terminal emulator is qterminal (xfce4-terminal was dropped), config lives in qterminal.ini
+mkdir -p ~/.config/qterminal.org/
+QTERMINALRC=~/.config/qterminal.org/qterminal.ini
+touch "$QTERMINALRC"
+if [[ ! -s "$QTERMINALRC" ]]; then
+    echo "[General]" > "$QTERMINALRC"
+elif ! grep -q "^\[General\]" "$QTERMINALRC"; then
+    sed -i '1i [General]' "$QTERMINALRC"
+fi
 
-set_terminal_pref() {
+set_qterminal_pref() {
     local key=$1 value=$2
-    if grep -q "^${key}=" "$TERMINALRC"; then
-        sed -i "s/^${key}=.*/${key}=${value}/" "$TERMINALRC"
+    if grep -q "^${key}=" "$QTERMINALRC"; then
+        sed -i "s/^${key}=.*/${key}=${value}/" "$QTERMINALRC"
     else
-        echo "${key}=${value}" >> "$TERMINALRC"
+        sed -i "/^\[General\]/a ${key}=${value}" "$QTERMINALRC"
     fi
 }
 
 echo "Setting terminal font size to 14"
-set_terminal_pref FontUseSystemFont FALSE
-set_terminal_pref FontName "Monospace 14"
+set_qterminal_pref fontFamily Monospace
+set_qterminal_pref fontSize 14
 
 echo "Disabling terminal transparency"
-set_terminal_pref BackgroundMode TERMINAL_BACKGROUND_SOLID
-set_terminal_pref BackgroundDarkness 1.000000
+set_qterminal_pref TerminalTransparency 0
+
+echo "Disabling xfwm4 compositor opacity (window manager applies its own opacity to inactive windows, which overrides the terminal's own solid/opaque setting)"
+xfconf-query -c xfwm4 -p /general/inactive_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/inactive_opacity -s 100
+xfconf-query -c xfwm4 -p /general/frame_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/frame_opacity -s 100
+xfconf-query -c xfwm4 -p /general/move_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/move_opacity -s 100
+xfconf-query -c xfwm4 -p /general/resize_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/resize_opacity -s 100
+xfconf-query -c xfwm4 -p /general/popup_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/popup_opacity -s 100
 
 echo -e "\nChanging layout"
 echo ================
