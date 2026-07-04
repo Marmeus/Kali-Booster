@@ -207,6 +207,41 @@ if [[ $terminal=="bash" ]]; then
     cp Assets/bashrc ~/.bashrc
 fi
 
+echo -e "\nTERMINAL EMULATOR"
+echo      ===================
+# Kali's default terminal emulator is qterminal (xfce4-terminal was dropped), config lives in qterminal.ini
+mkdir -p ~/.config/qterminal.org/
+QTERMINALRC=~/.config/qterminal.org/qterminal.ini
+touch "$QTERMINALRC"
+if [[ ! -s "$QTERMINALRC" ]]; then
+    echo "[General]" > "$QTERMINALRC"
+elif ! grep -q "^\[General\]" "$QTERMINALRC"; then
+    sed -i '1i [General]' "$QTERMINALRC"
+fi
+
+set_qterminal_pref() {
+    local key=$1 value=$2
+    if grep -q "^${key}=" "$QTERMINALRC"; then
+        sed -i "s/^${key}=.*/${key}=${value}/" "$QTERMINALRC"
+    else
+        sed -i "/^\[General\]/a ${key}=${value}" "$QTERMINALRC"
+    fi
+}
+
+echo "Setting terminal font size to 14"
+set_qterminal_pref fontFamily Monospace
+set_qterminal_pref fontSize 14
+
+echo "Disabling terminal transparency"
+set_qterminal_pref TerminalTransparency 0
+
+echo "Disabling xfwm4 compositor opacity (window manager applies its own opacity to inactive windows, which overrides the terminal's own solid/opaque setting)"
+xfconf-query -c xfwm4 -p /general/inactive_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/inactive_opacity -s 100
+xfconf-query -c xfwm4 -p /general/frame_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/frame_opacity -s 100
+xfconf-query -c xfwm4 -p /general/move_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/move_opacity -s 100
+xfconf-query -c xfwm4 -p /general/resize_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/resize_opacity -s 100
+xfconf-query -c xfwm4 -p /general/popup_opacity -n -t int -s 100 2>/dev/null || xfconf-query -c xfwm4 -p /general/popup_opacity -s 100
+
 echo -e "\nChanging layout"
 echo ================
 setxkbmap -layout $keyboard_layout
@@ -246,10 +281,27 @@ echo -e "\nKALI ICONS"
 echo      ============  
 cp ./Assets/BurpPro.png ~/Pictures/
 cd $KALI_BOOSTER_PATH
+set_xfce_wallpaper () {
+    local image="$1"
+    # Existing properties (covers whatever monitor names xfce already knows about)
+    for prop in $(xfconf-query -c xfce4-desktop -l 2>/dev/null | grep -E "(last-image|image-path)$"); do
+        xfconf-query -c xfce4-desktop -p "$prop" -s "$image"
+    done
+    # Live output(s) (e.g. rdp0 over xrdp/Hyper-V Enhanced Session) may not have any
+    # property created yet, so derive the name from xrandr and create it if missing.
+    for mon in $(xrandr --query 2>/dev/null | awk '/ connected/ {print $1}'); do
+        for prop in "/backdrop/screen0/monitor$mon/workspace0/last-image" \
+                    "/backdrop/screen0/monitor$mon/last-image"; do
+            xfconf-query -c xfce4-desktop -p "$prop" -n -t string -s "$image" 2>/dev/null \
+                || xfconf-query -c xfce4-desktop -p "$prop" -s "$image" 2>/dev/null
+        done
+    done
+}
+
 if [[ $wallpaper == "./Assets/"* ]]; then
     echo Changing backgroung to Marmeus\' Wallpaper...
     cp $wallpaper ~/Pictures/wallpaper.png
-    sed -if "s/\/usr\/share\/backgrounds\/kali-16x9\/default/\/home\/$(whoami)\/Pictures\/wallpaper.png/g" ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+    set_xfce_wallpaper ~/Pictures/wallpaper.png
 elif [[ ! $wallpaper ]]; then
     # Empty string
     echo No changes were made
@@ -257,6 +309,7 @@ elif [[ ! $wallpaper ]]; then
 else
     echo Changing background to custom Wallpaper...
     cp $wallpaper ~/Pictures/wallpaper.png
+    set_xfce_wallpaper ~/Pictures/wallpaper.png
 fi
 
 if [[ $icon_panel_menu == "./Assets/"* ]]; then
