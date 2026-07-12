@@ -96,19 +96,19 @@ echo -e "\nInstalling Tools"
 echo      "----------------"
 if [[ $tools == "true" ]]; then
     echo "Installing tool packages..."
-    sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool pgp curl sqlite3 python3-virtualenv bat curl virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3-venv -y 
+    sudo apt-get -qq install make vim tmux wget openjdk-11-jdk-headless default-jdk xclip ghidra docker.io rlwrap sshuttle apktool gnupg curl sqlite3 python3-virtualenv bat virtualenv golang-go gobuster dnsutils chisel libimage-exiftool-perl starkiller mingw-w64 mono-devel python3-venv -y
 else
     echo -e Nope\\n\\n
 fi
 
-echo -e "\nInstalling VM requirements" -e
+echo -e "\nInstalling VM requirements"
 echo "--------------------------"
 if [[ $vm == "VBox" ]]; then
     sudo apt-get -qq install virtualbox-guest-utils -y 
-    vboxsf=$(grep vboxsf /etc/group | cut -d ':' -f 3)
+    vboxsf=$(grep vboxsf /etc/group | cut -d ':' -f 1)
     sudo usermod -aG $vboxsf $USER
 elif [[ $vm == "VMWare" ]]; then
-    sudo apt-get -qq intall fuse open-vm-tools-desktop -y
+    sudo apt-get -qq install fuse open-vm-tools-desktop -y
     # Share folders mount at boot time: 
     echo "@reboot         root    mount-shared-folders" | sudo tee -a /etc/crontab
 else
@@ -119,7 +119,7 @@ echo -e "\nInstalling PIP"
 echo      "--------------"
 if [[ $install_pip2 == "true" ]]; then
     echo Uninstalling pip3...
-    sudo pip uninstall pip >/dev/null
+    sudo pip uninstall pip -y >/dev/null
     echo Installing pip2.7....
     sudo python2.7 Assets/get-pip2.7.py >/dev/null
     echo installing pip3...
@@ -201,7 +201,7 @@ echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf
 
 echo -e "\n Overwritting .bashrc"
 echo        ====================
-if [[ $terminal=="bash" ]]; then
+if [[ $terminal == "bash" ]]; then
     sudo chsh -s /bin/bash $(whoami)
     cp Assets/bashrc ~/.bashrc
 fi
@@ -258,7 +258,6 @@ if [[ $upgrade_firefox == "true" ]]; then
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/wappalyzer/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
-    wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     wget -q $(curl https://addons.mozilla.org/en-US/firefox/addon/onetab/ 2>/dev/null | grep -Po 'href="[^"]*">Download file' | awk -F\" '{print $2}')
     firefox *.xpi
 
@@ -299,7 +298,7 @@ set_xfce_wallpaper () {
 
 if [[ $wallpaper == "./Assets/"* ]]; then
     echo Changing backgroung to Marmeus\' Wallpaper...
-    cp $wallpaper ~/Pictures/wallpaper.png
+    cp "$wallpaper" ~/Pictures/wallpaper.png
     set_xfce_wallpaper ~/Pictures/wallpaper.png
 elif [[ ! $wallpaper ]]; then
     # Empty string
@@ -307,7 +306,7 @@ elif [[ ! $wallpaper ]]; then
     echo -n
 else
     echo Changing background to custom Wallpaper...
-    cp $wallpaper ~/Pictures/wallpaper.png
+    cp "$wallpaper" ~/Pictures/wallpaper.png
     set_xfce_wallpaper ~/Pictures/wallpaper.png
 fi
 
@@ -315,7 +314,7 @@ if [[ $icon_panel_menu == "./Assets/"* ]]; then
     echo Changing panel menu icon to Marmeus\' icon...
     cp $icon_panel_menu ~/Pictures/button-icon.png
     cp ./Assets/whiskermenu-1.rc ~/.config/xfce4/panel/whiskermenu-1.rc
-    sed -if "s/kali-panel-menu/\/home\/$(whoami)\/Pictures\/button-icon.png/g" ~/.config/xfce4/panel/whiskermenu-1.rc
+    sed -i "s/kali-panel-menu/\/home\/$(whoami)\/Pictures\/button-icon.png/g" ~/.config/xfce4/panel/whiskermenu-1.rc
 elif [[ ! $icon_panel_menu ]]; then
     # Empty string
     echo No changes were made
@@ -363,8 +362,7 @@ echo -e "\nTHM"
 echo      =====
 if [[ ! $thm_vpn_path == "" ]]; then
     echo Setting VPN...
-    mkdir ~/Documents/THM
-    ln -s $(dirname $thm_vpn_path) ~/Documents/THM
+    ln -s "$(dirname "$thm_vpn_path")" ~/Documents/THM
     echo "alias thm=\"sudo openvpn $thm_vpn_path\"" >> ~/.bashrc
     
 else
@@ -375,8 +373,7 @@ echo -e "\nHTB"
 echo      =====
 if [[ ! $htb_vpn_path == "" ]]; then
     echo Setting VPN...
-    mkdir ~/Documents/HTB
-    ln -s $(dirname $htb_vpn_path) ~/Documents/HTB
+    ln -s "$(dirname "$htb_vpn_path")" ~/Documents/HTB
     echo "alias htb=\"sudo openvpn $htb_vpn_path\"" >> ~/.bashrc
 else
     echo -e Nope\\n\\n
@@ -458,14 +455,14 @@ if [[ $tools == "true" ]]; then
     cd ~/Tools/Web/bypass-url-parser
     virtualenv -p python3 .py3
     source .py3/bin/activate
-    pip install -q -r requirements.txt 2>&1 >/dev/null
+    pip install -q -r requirements.txt >/dev/null 2>&1
     deactivate 
     
     echo Installing dontgo403...
     git clone -q https://github.com/devploit/dontgo403 ~/Tools/Web/dontgo403; 
     cd ~/Tools/Web/dontgo403; 
-    go get 2>&1 >/dev/null
-    go build 2>&1 >/dev/null
+    go mod tidy >/dev/null 2>&1
+    go build >/dev/null 2>&1
 
     echo Installing testssl.sh...
     git clone -q https://github.com/testssl/testssl.sh ~/Tools/Web/testssl; 
@@ -473,7 +470,7 @@ if [[ $tools == "true" ]]; then
     echo Installing forbidden...
     git clone -q https://github.com/ivan-sincek/forbidden ~/Tools/Web/forbidden
     cd ~/Tools/Web/forbidden/src/
-    pip3 install -q -r requirements.txt 2>&1 >/dev/null
+    pip3 install -q -r requirements.txt >/dev/null 2>&1
     
     echo Installing byp4xx...
     git clone https://github.com/lobuhi/byp4xx.git ~/Tools/Web/byp4xx
@@ -488,41 +485,41 @@ if [[ $tools == "true" ]]; then
 
     echo Installing rustscan...
     wget -q https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb -O rustscan.deb
-    sudo apt-get -qqy install /tmp/rustscan.deb 2>&1 >/dev/null
+    sudo apt-get -qqy install /tmp/rustscan.deb >/dev/null 2>&1
 
     echo Installing Impacket...
     sudo git clone -q https://github.com/SecureAuthCorp/impacket.git /opt/impacket
     cd /opt/impacket
-    pip3 install -q -r /opt/impacket/requirements.txt 2>&1 >/dev/null
-    cd /opt/impacket/ && sudo python3 ./setup.py install 2>&1 >/dev/null
+    pip3 install -q -r /opt/impacket/requirements.txt >/dev/null 2>&1
+    cd /opt/impacket/ && sudo python3 ./setup.py install >/dev/null 2>&1
     
     #echo Installing Volatility 2...
     #sudo apt-get -qq install yara python2.7-dev -y
     #sudo git clone -q https://github.com/volatilityfoundation/volatility.git /opt/volatility
     #cd /opt/volatility
-    #sudo python setup.py install 2>&1 >/dev/null
+    #sudo python setup.py install >/dev/null 2>&1
     #echo Volatility 2: distorm plugin...
     #sudo git clone -q https://github.com/gdabah/distorm.git
     #cd distorm
-    #sudo python2.7 setup.py build install 2>&1 >/dev/null
+    #sudo python2.7 setup.py build install >/dev/null 2>&1
     #echo Volatility 2: pycrypto  plugin...
     #wget -q https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz
     #tar -xvzf pycrypto-2.6.1.tar.gz >/dev/null
     #cd pycrypto-2.6.1
-    #sudo python2.7 setup.py build install 2>&1 >/dev/null
+    #sudo python2.7 setup.py build install >/dev/null 2>&1
     #   
     #   
     #echo Installing Volatility 3
     #sudo git clone -q  https://github.com/volatilityfoundation/volatility3.git /opt/volatility3
     #cd /opt/volatility3
-    #sudo python3 setup.py build 2>&1 >/dev/null
-    #sudo python3 setup.py install 2>&1 >/dev/null
-    #sudo pip3 install -q -r requirements.txt 2>&1 >/dev/null
+    #sudo python3 setup.py build >/dev/null 2>&1
+    #sudo python3 setup.py install >/dev/null 2>&1
+    #sudo pip3 install -q -r requirements.txt >/dev/null 2>&1
     
     echo Installing JWT_TOOL...
     sudo git clone -q https://github.com/ticarpi/jwt_tool /opt/jwt_tool
     cd /opt/jwt_tool
-    sudo python3 -m pip install -q termcolor cprint pycryptodomex requests 2>&1 >/dev/null
+    sudo python3 -m pip install -q termcolor cprint pycryptodomex requests >/dev/null 2>&1
     echo 'alias jwt_tool="python3 /opt/jwt_tool/jwt_tool.py"' >> ~/.bashrc
     
     echo Installing Windows Exploit Suggester...
@@ -531,7 +528,7 @@ if [[ $tools == "true" ]]; then
     echo 'alias windows-exploit-suggester="python2.7 /opt/windows-exploit-suggester.py"' >> ~/.bashrc
     
     echo Installing EVIL-WINRM...
-    sudo gem install evil-winrm 2>&1 >/dev/null
+    sudo gem install evil-winrm >/dev/null 2>&1
     
     echo Installing STEGSEEK...
     wget -q https://github.com/RickdeJager/stegseek/releases/download/v0.6/stegseek_0.6-1.deb -O /tmp/stegseek.deb
@@ -539,9 +536,9 @@ if [[ $tools == "true" ]]; then
     
     echo Installing STEGO-TOOLKIT...
     sudo docker pull dominicbreuker/stego-toolkit >/dev/null
-    echo 'alias stego-toolkit="echo 'WIKI: https://github.com/DominicBreuker/stego-toolkit'; sudo docker run -v $(pwd):/data -it dominicbreuker/stego-toolkit:latest /bin/bash"' >> ~/.bashrc
+    echo "alias stego-toolkit=\"echo 'WIKI: https://github.com/DominicBreuker/stego-toolkit'; sudo docker run -v \$(pwd):/data -it dominicbreuker/stego-toolkit:latest /bin/bash\"" >> ~/.bashrc
     
-    echo Installing Java decompiler >/dev/null
+    echo Installing Java decompiler
     sudo wget -q https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar -O /opt/javaDecompiler.jar
     echo 'alias javaDecompiler="java -jar /opt/javaDecompiler.jar &>/dev/null &"' >> ~/.bashrc
     
@@ -550,7 +547,7 @@ if [[ $tools == "true" ]]; then
     sudo chmod +x /usr/bin/kerbrute
     
     echo Installing GIT-DUMPER...
-    sudo pip install -q git-dumper 2>&1 >/dev/null
+    sudo pip install -q git-dumper >/dev/null 2>&1
     
     
     echo Installing VS CODE...
@@ -573,7 +570,7 @@ if [[ ! $utilities_path == "" ]]; then
     echo Populating utilities at $utilities_path
     mkdir $utilities_path
     cp -r ./Assets/MaliciousImages/ ~/Pictures/
-    unzip -o -P "Documents" -d "~/Documents/" ./Assets/Documents.zip
+    unzip -o -P "Documents" -d "$HOME/Documents/" ./Assets/Documents.zip
     cp -r ./Assets/HTMLs ~/.
     cd $utilities_path
     wget -q https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O LinEnum.sh
@@ -583,8 +580,8 @@ if [[ ! $utilities_path == "" ]]; then
     wget -q https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/x64/Release/winPEASx64.exe -O winPEASx64.exe
     wget -q https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/x86/Release/winPEASx86.exe -O winPEASx86.exe
     wget -q https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/winPEAS/winPEASbat/winPEAS.bat -O winPEAS.bat
-    wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 -O ~/UTILS/pspy32; chmod +x pspy32
-    wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 -O ~/UTILS/pspy64; chmod +x pspy64
+    wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 -O ~/UTILS/pspy32; chmod +x ~/UTILS/pspy32
+    wget -q https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 -O ~/UTILS/pspy64; chmod +x ~/UTILS/pspy64
     wget -q https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1 -O PowerUp.ps1
     wget -q https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1 -O PowerView.ps1
     wget -q https://raw.githubusercontent.com/rasta-mouse/Sherlock/master/Sherlock.ps1 -O Sherlock.ps1
