@@ -2,6 +2,81 @@
 source ./config.cfg
 KALI_BOOSTER_PATH=$(pwd)
 
+echo -e "\nChanging user power management"
+echo      "================================"
+mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml/
+cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-power-manager" version="1.0">
+  <property name="xfce4-power-manager" type="empty">
+    <property name="power-button-action" type="uint" value="0"/>
+    <property name="sleep-button-action" type="uint" value="0"/>
+    <property name="hibernate-button-action" type="uint" value="0"/>
+    <property name="lid-action-on-ac" type="uint" value="0"/>
+    <property name="lid-action-on-battery" type="uint" value="0"/>
+    <property name="logind-handle-lid-switch" type="bool" value="false"/>
+    <property name="show-panel-label" type="empty"/>
+    <property name="show-tray-icon" type="bool" value="false"/>
+    <property name="blank-on-ac" type="int" value="0"/>
+    <property name="blank-on-battery" type="int" value="0"/>
+    <property name="dpms-on-ac-sleep" type="uint" value="0"/>
+    <property name="dpms-on-ac-off" type="uint" value="0"/>
+    <property name="dpms-on-battery-sleep" type="uint" value="0"/>
+    <property name="dpms-on-battery-off" type="uint" value="0"/>
+    <property name="inactivity-on-ac" type="uint" value="0"/>
+    <property name="inactivity-on-battery" type="uint" value="0"/>
+    <property name="inactivity-sleep-mode-on-ac" type="uint" value="0"/>
+    <property name="inactivity-sleep-mode-on-battery" type="uint" value="0"/>
+    <property name="lock-screen-suspend-hibernate" type="bool" value="false"/>
+    <property name="dpms-enabled" type="bool" value="false"/>
+  </property>
+</channel>
+EOF
+
+echo "Disabling the screensaver / screen lock"
+mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml/
+cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-screensaver" version="1.0">
+  <property name="saver" type="empty">
+    <property name="enabled" type="bool" value="false"/>
+    <property name="idle-activation" type="empty">
+      <property name="enabled" type="bool" value="false"/>
+    </property>
+  </property>
+  <property name="lock" type="empty">
+    <property name="enabled" type="bool" value="false"/>
+    <property name="saver-activation" type="bool" value="false"/>
+  </property>
+</channel>
+EOF
+
+echo "Forcing X11 screensaver/DPMS off on every session"
+mkdir -p ~/.config/autostart/
+cat << EOF > ~/.config/autostart/disable-screensaver.desktop
+[Desktop Entry]
+Type=Application
+Name=Disable screensaver and DPMS
+Exec=sh -c "xset s off; xset s noblank; xset -dpms"
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+EOF
+
+echo "Disabling suspend/hibernate at the systemd level (holds regardless of desktop settings, lid switch or power button)"
+sudo mkdir -p /etc/systemd/logind.conf.d/
+cat << EOF | sudo tee /etc/systemd/logind.conf.d/disable-suspend.conf > /dev/null
+[Login]
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+HandleLidSwitchDocked=ignore
+HandleSuspendKey=ignore
+HandleHibernateKey=ignore
+IdleAction=ignore
+EOF
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
 echo "SYSTEM PACKAGES"
 echo =================
 echo -e "Updating package repositories... (Needed by default)"
@@ -119,82 +194,6 @@ EOF
 else
     echo -e Nope\\n\\n
 fi
-
-
-echo -e "\nChanging user power management"
-echo      ================================
-mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml/
-cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
-<?xml version="1.0" encoding="UTF-8"?>
-
-<channel name="xfce4-power-manager" version="1.0">
-  <property name="xfce4-power-manager" type="empty">
-    <property name="power-button-action" type="uint" value="0"/>
-    <property name="sleep-button-action" type="uint" value="0"/>
-    <property name="hibernate-button-action" type="uint" value="0"/>
-    <property name="lid-action-on-ac" type="uint" value="0"/>
-    <property name="lid-action-on-battery" type="uint" value="0"/>
-    <property name="logind-handle-lid-switch" type="bool" value="false"/>
-    <property name="show-panel-label" type="empty"/>
-    <property name="show-tray-icon" type="bool" value="false"/>
-    <property name="blank-on-ac" type="int" value="0"/>
-    <property name="blank-on-battery" type="int" value="0"/>
-    <property name="dpms-on-ac-sleep" type="uint" value="0"/>
-    <property name="dpms-on-ac-off" type="uint" value="0"/>
-    <property name="dpms-on-battery-sleep" type="uint" value="0"/>
-    <property name="dpms-on-battery-off" type="uint" value="0"/>
-    <property name="inactivity-on-ac" type="uint" value="0"/>
-    <property name="inactivity-on-battery" type="uint" value="0"/>
-    <property name="inactivity-sleep-mode-on-ac" type="uint" value="0"/>
-    <property name="inactivity-sleep-mode-on-battery" type="uint" value="0"/>
-    <property name="lock-screen-suspend-hibernate" type="bool" value="false"/>
-    <property name="dpms-enabled" type="bool" value="false"/>
-  </property>
-</channel>
-EOF
-
-echo "Disabling the screensaver / screen lock"
-mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml/
-cat << EOF > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml
-<?xml version="1.0" encoding="UTF-8"?>
-
-<channel name="xfce4-screensaver" version="1.0">
-  <property name="saver" type="empty">
-    <property name="enabled" type="bool" value="false"/>
-    <property name="idle-activation" type="empty">
-      <property name="enabled" type="bool" value="false"/>
-    </property>
-  </property>
-  <property name="lock" type="empty">
-    <property name="enabled" type="bool" value="false"/>
-    <property name="saver-activation" type="bool" value="false"/>
-  </property>
-</channel>
-EOF
-
-echo "Forcing X11 screensaver/DPMS off on every session"
-mkdir -p ~/.config/autostart/
-cat << EOF > ~/.config/autostart/disable-screensaver.desktop
-[Desktop Entry]
-Type=Application
-Name=Disable screensaver and DPMS
-Exec=sh -c "xset s off; xset s noblank; xset -dpms"
-NoDisplay=true
-X-GNOME-Autostart-enabled=true
-EOF
-
-echo "Disabling suspend/hibernate at the systemd level (holds regardless of desktop settings, lid switch or power button)"
-sudo mkdir -p /etc/systemd/logind.conf.d/
-cat << EOF | sudo tee /etc/systemd/logind.conf.d/disable-suspend.conf > /dev/null
-[Login]
-HandleLidSwitch=ignore
-HandleLidSwitchExternalPower=ignore
-HandleLidSwitchDocked=ignore
-HandleSuspendKey=ignore
-HandleHibernateKey=ignore
-IdleAction=ignore
-EOF
-sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 
 echo "Adding proxychains"
 echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf 
